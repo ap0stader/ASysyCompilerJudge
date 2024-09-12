@@ -1,0 +1,5 @@
+{
+  "clang": "clang",
+  "llvm-link": "llvm-link",
+  "lli": "lli"
+}

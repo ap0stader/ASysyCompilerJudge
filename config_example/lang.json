@@ -1,0 +1,6 @@
+{
+  "programming language": "java",
+  "java": {
+    "jar_path": "PATH_TO_JAR"
+  }
+}

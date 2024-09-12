@@ -1,0 +1,26 @@
+{
+  "lexical_analysis": {
+    "args": "-L",
+    "testfile_dir": "./testfile/lexical_analysis/"
+  },
+  "syntax_analysis": {
+    "args": "-S",
+    "testfile_dir": "./testfile/syntax_analysis/"
+  },
+  "error_handling": {
+    "args": "-E",
+    "testfile_dir": "./testfile/error_handling"
+  },
+  "code_generation": {
+    "testfile_dir": "./testfile/code_generation",
+    "llvm": {
+      "args": "-I"
+    },
+    "mips": {
+      "args": "-O0"
+    },
+    "mips_optimized": {
+      "args": "-O1"
+    }
+  }
+}
