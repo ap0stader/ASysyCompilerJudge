@@ -5,11 +5,15 @@ from util.statuscode import StatusCode
 
 class Analyzer(ABC):
     @abstractmethod
+    def register_origin(self, origin: str, **kwargs):
+        pass
+
+    @abstractmethod
     def prepare(self):
         pass
 
     @abstractmethod
-    def info(self, status: StatusCode, info):
+    def analyze(self, status: StatusCode, origin: str, info_dict: dict):
         pass
 
     @abstractmethod
