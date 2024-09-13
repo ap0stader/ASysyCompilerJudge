@@ -5,9 +5,13 @@ from util.statuscode import StatusCode
 
 
 class Judge(ABC):
-    @abstractmethod
+    __name: str
+
+    def __init__(self, name: str):
+        self.__name = name
+
     def name(self) -> str:
-        pass
+        return self.__name
 
     @abstractmethod
     def init(self):

@@ -53,9 +53,9 @@ def get_executor_config(mode: str):
             name = "Lexical Analysis"
             return {
                 "args": get_config()['stage'][mode]['args'],
+                "judge_type": "different",
                 "judge_configs": [
                     {
-                        "name": name,
                         "compiler_output_file": "output.txt",
                         "judge": LineCompare(name),
                         "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
@@ -70,9 +70,9 @@ def get_executor_config(mode: str):
             name = "Syntax Analysis"
             return {
                 "args": get_config()['stage'][mode]['args'],
+                "judge_type": "different",
                 "judge_configs": [
                     {
-                        "name": name,
                         "compiler_output_file": "output.txt",
                         "judge": LineCompare(name),
                         "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
