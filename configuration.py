@@ -31,7 +31,7 @@ def get():
             openpath = (__EXAMPLE_PATH / filename)
         try:
             config[key] = json.loads(openpath.read_text())
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             print(f">>> {RED}Error: Cannot find the json file " +
                   f"`{CYAN}{openpath}{RED}`.{RESET}")
             exit(1)

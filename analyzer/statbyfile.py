@@ -19,21 +19,28 @@ class StatByFile(Analyzer):
         for key in self.data:
             self.data[key] = self.__get_empty_stat()
 
-    def analyze(self, status: StatusCode, origin: str, info_dict: dict):
-        self.data["origin"]["All"] += 1
+    def update_data(self, status: StatusCode, origin: str):
+        self.data[origin]["All"] += 1
         match status:
             case StatusCode.JUDGE_AC:
-                self.data["origin"]["AC"] += 1
+                self.data[origin]["AC"] += 1
             case StatusCode.JUDGE_PART:
-                self.data["origin"]["PART"] += 1
+                self.data[origin]["PART"] += 1
             case StatusCode.JUDGE_WA:
-                self.data["origin"]["WA"] += 1
+                self.data[origin]["WA"] += 1
             case StatusCode.EXECUTE_TLE:
-                self.data["origin"]["TLE"] += 1
+                self.data[origin]["TLE"] += 1
             case StatusCode.EXECUTE_RE:
-                self.data["origin"]["RE"] += 1
+                self.data[origin]["RE"] += 1
             case _:
-                self.data["origin"]["UNKNOWN"] += 1
+                self.data[origin]["UNKNOWN"] += 1
+
+    def analyze(self, status: StatusCode, origin: str, info_dict: dict):
+        if origin is None:
+            for key in self.data:
+                self.update_data(status, key)
+        else:
+            self.update_data(status, origin)
 
     def summary_print(self):
         print("===== " + self.name + " Statistics =====")

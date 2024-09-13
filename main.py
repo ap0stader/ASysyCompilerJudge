@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 
@@ -32,7 +31,7 @@ if __name__ == '__main__':
             print("Invalid input", file=sys.stderr)
             exit(1)
     # 读取配置文件内容
-    testfile_dir = Path(CONFIG['stage'][mode]['testfile_dir'])
+    testfile_dir = Path(CONFIG['stage'][mode]['testfile_path'])
     sourcecode_prefix = CONFIG['stage'][mode]['sourcecode_prefix']
     input_prefix = ""
     if 'input_prefix' in CONFIG['stage'][mode]:
