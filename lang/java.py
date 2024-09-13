@@ -3,6 +3,7 @@ import shutil
 import sys
 from pathlib import Path
 from subprocess import Popen, PIPE, TimeoutExpired
+from typing import Tuple
 
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
@@ -44,7 +45,7 @@ class Java(Lang):
             exit(1)
         shutil.copy(jar_path, self.__TEMP_JAR_PATH)
 
-    def get_observer(self, executor: Executor, **kwargs) -> Observer:
+    def get_observer(self, executor: Executor, **kwargs):
         print(">>> Creating Java Observer...")
         # 创建JAR文件的观察者
         observer = Observer()
@@ -54,7 +55,7 @@ class Java(Lang):
         observer.schedule(handler, self.jar_dir)
         return observer
 
-    def execute(self, args: str, sourcecode_path: str, compiler_all_output_path: str) -> (StatusCode, str, str):
+    def execute(self, args: str, sourcecode_path: str, compiler_all_output_path: str) -> Tuple[StatusCode, str, str]:
         # 创建工作目录
         self.__TEMP_WORKDIR.mkdir(exist_ok=True)
         # 拷贝源代码文件

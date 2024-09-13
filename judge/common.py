@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
+from typing import Tuple
 
 from util.statuscode import StatusCode
 
@@ -18,5 +19,5 @@ class Judge(ABC):
         pass
 
     @abstractmethod
-    def judge(self, compiler_output_path: Path, input_path: Path, answer_path: Path) -> (StatusCode, dict):
+    def judge(self, compiler_output_path: Path, input_path: Path, answer_path: Path) -> Tuple[StatusCode, dict]:
         pass

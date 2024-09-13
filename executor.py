@@ -3,9 +3,7 @@ import sys
 import time
 
 from pathlib import Path
-from typing import Callable, Tuple
-
-from watchdog.observers import Observer
+from typing import Callable, List, Tuple
 
 from judge.common import Judge
 from util.statuscode import StatusCode
@@ -31,7 +29,7 @@ class Executor:
                 print("Wrong judge type", file=sys.stderr)
                 exit(1)
 
-    def add_observer(self, observer: Observer):
+    def add_observer(self, observer):
         self.observers.append(observer)
 
     def set_execute(self, execute: Callable[[str, str, str], Tuple[StatusCode, str, str]]):
@@ -152,7 +150,7 @@ class Executor:
 
     def test(self, test_index: int, info_path: Path, sourcecode_name: str, sourcecode_path: Path,
              input_path: Path, answer_path: Path, compiler_output_files_path: Path,
-             judge_pairs: [(str, Judge)]):
+             judge_pairs: List[Tuple[str, Judge]]):
         with open(info_path, "w") as info:
             print("No." + str(test_index) + "\tSourcecode: " + sourcecode_name, end="\t", flush=True)
             execute_result, execute_stdout, execute_stderr = self.execute(self.args,
