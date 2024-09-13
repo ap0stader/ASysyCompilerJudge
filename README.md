@@ -2,7 +2,7 @@
 
 **A** **S**ysy Compiler Judge
 
-By [@**A**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.com/swkfk)
+By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.com/swkfk)
 
 ## 简介
 
@@ -19,18 +19,18 @@ By [@**A**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 
 实验阶段：
 
-- [x] 词法分析（已完成）(@Ap0stader)
-- [x] 语法分析（已完成开发，待上线）(@Ap0stader)
-- [ ] 错误处理（待开发）(@Ap0stader)
+- [x] 词法分析（已完成，待修改）(@Ap0stader)
+- [x] 语法分析（已完成，待修改）(@Ap0stader)
+- [ ] 语义分析（待开发）(@Ap0stader)
 - [x] 代码生成(LLVM)（已完成开发，待上线）(@swkfk)
 - [ ] 代码生成(MIPS)（开发中）（@swkfk)
 
 评测功能：
 
 - [x] JAR文件自动拉取评测（已完成）(@Ap0stader)
+- [x] 自定义评测（已完成）(@Ap0stader)
 - [x] MARS执行周期统计（已完成）(@swkfk)
 - [ ] VSCode中打开与比较文件指令
-- [ ] 代码生成阶段自定义评测
 
 ## 如何使用
 
@@ -80,7 +80,7 @@ By [@**A**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 
 2. **必须**配置lang.json，该文件包括开发语言信息。`"programming language"`中配置开发语言，目前测评机支持Java(`"java"`)。若开发语言为Java，需要在`"java"`中的`"jar_path"`配置生成的编译程序的JAR文件的**绝对路径**。**注意：请先使用IDEA等开发工具生成JAR之后再配置，测评机启动时会检测JAR文件是否存在**
 
-   ```json
+   ```javascript
    {
      "programming language": "java", // Java -> java
      "java": {
@@ -93,7 +93,7 @@ By [@**A**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 
 3. **可选**配置stage.json，该文件包括实验各阶段的运行和测评信息。以词法分析(`lexical_analysis`)为例，`"args"`表示评测机运行JAR文件时传入的参数，建议自行设计编译程序的传入参数体系~~以防止被判为抄袭~~ ***（提示：课程平台运行时的传入参数以课程平台公布为准，可能无参数）***。`"testfile_path"`为测试用例存放的文件夹。在初始化时已经在项目的根目录生成好了testfile的目录结构。`"sourcecode_prefix"`为测试用例的源代码文件名称前缀，`"answer_prefix"`为测试用例的答案文件名称前缀，在代码生成阶段还需要指定`"input_prefix"`即输测试用例的入数据文件名称前缀。*（具体见**数据导入**部分）*
 
-   ```json
+   ```javascript
    {
      "lexical_analysis": {
        "args": "-LEX",
@@ -101,7 +101,7 @@ By [@**A**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
        "sourcecode_prefix": "testfile",
        "answer_prefix": "output"
      },
-   	............
+     // ............
    }
    ```
 
