@@ -1,21 +1,22 @@
 # 初始化工作环境
-import os.path
+import os
 import shutil
+from pathlib import Path
 
 from util.termcolor import RESET, RED, GREEN, BOLD, ITALIC
 
 
 # 删除之前的文件或文件夹，并根据情况决定决定是否创建新的文件夹
-def process_folder(name: str, created: bool = True):
-    if os.path.isdir("./" + name):
-        shutil.rmtree("./" + name)
-        print(RED + "Previous " + name + " folder removed." + RESET)
-    elif os.path.isfile("./" + name):
-        os.remove("./" + name)
-        print(RED + "Previous " + name + " file removed." + RESET)
+def process_folder(path: Path, created: bool = True):
+    if path.is_dir():
+        shutil.rmtree(path)
+        print(RED + "Previous " + str(path) + " folder removed." + RESET)
+    elif path.is_file():
+        path.unlink()
+        print(RED + "Previous " + str(path) + " file removed." + RESET)
     if created:
-        os.mkdir("./" + name)
-        print(GREEN + name + "/ folder created." + RESET)
+        path.mkdir()
+        print(GREEN + str(path) + " folder created." + RESET)
 
 
 print(BOLD + "=======   ASysyCompilerJudge Initialization   =======" + RESET)
@@ -34,20 +35,31 @@ if sure == "Y" or sure == "y":
 
     # runtime文件夹
     print(">>>>>  Create runtime/")
-    process_folder("runtime")
-    os.mkdir("./runtime/results")
+    runtime = Path("./runtime")
+    process_folder(runtime)
+    # results文件
+    print(">>>>>  Create results/")
+    results = Path("./results")
+    if results.is_file():
+        print(RED + "Previous " + str(results) + " is a file. Please backup and delete it." + RESET)
+        exit(1)
+    results.mkdir(exist_ok=True)
+    print(GREEN + str(results) + " folder created." + RESET)
     # testfile文件夹
     print(">>>>>  Create testfile/")
-    process_folder("testfile")
+    testfile = Path("./testfile")
+    process_folder(testfile)
     for folder in ("lexical_analysis", "syntax_analysis",
                    "error_handling", "code_generation"):
-        os.mkdir("./testfile/" + folder)
-        print(GREEN + "./testfile/" + folder + "/ folder created." + RESET)
+        (testfile / folder).mkdir()
+        print(GREEN + str(testfile / folder) + " folder created." + RESET)
     # config文件夹
     print(">>>>>  Create config/")
-    process_folder("config", False)
-    shutil.copytree("./config_example/", "./config/", dirs_exist_ok=True)
-    print(GREEN + "config_example/ folder copied." + RESET)
+    config = Path("./config")
+    config_example = Path("./config_example")
+    process_folder(config, False)
+    shutil.copytree(config_example, config)
+    print(GREEN + str(config_example) + " folder copied." + RESET)
 
     print(GREEN + "=======           Initialization End          =======" + RESET)
 

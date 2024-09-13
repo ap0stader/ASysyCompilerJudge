@@ -8,5 +8,6 @@ __pycache__/
 
 # Generated files
 runtime/
+results/
 testfile/
 config/
