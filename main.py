@@ -53,7 +53,7 @@ if __name__ == '__main__':
     lang = CONFIG['lang']['programming language']
     match lang:
         case 'java':
-            jar_path = Path(CONFIG['lang']['java']['jar_path'])
+            jar_path = CONFIG['lang']['java']['jar_path']
             print("- Programming language: " + RED + "Java" + RESET)
             print("- JAR file path: " + INVERSE + str(jar_path) + RESET)
             from lang import java
@@ -61,10 +61,12 @@ if __name__ == '__main__':
             start = input("Start observing JAR file? [Y/N] ")
             print()
             if start.upper() == "Y":
+                executor.set_compiler_observer(java.get_observer(executor=executor, jar_path=jar_path))
                 executor.set_execute(java.execute)
-                java.start(executor=executor, jar_path=jar_path)
         # TODO 增加其他开发语言
         case _:
             print("Programming language " + lang + " is not supported", file=sys.stderr)
+            exit(1)
+    executor.observe()
 
     print("\nGoodBye~")

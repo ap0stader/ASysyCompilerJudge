@@ -30,7 +30,7 @@ class ModifiedHandler(FileSystemEventHandler):
             self.executor.start()
 
 
-def get_observer(executor: Executor, jar_path: str):
+def get_observer(executor: Executor, jar_path: str) -> Observer:
     print(">>> Creating Java Observer...")
     # 创建Java开发语言的文件夹
     __TEMP_BASE.mkdir(exist_ok=True)

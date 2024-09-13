@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from judge.common import Judge
 from util.statuscode import StatusCode
 
@@ -12,7 +14,7 @@ class LineCompare(Judge):
     def name(self) -> str:
         return self.name
 
-    def judge(self, compiler_output_path: str, input_path: str, answer_path: str) -> (StatusCode, dict):
+    def judge(self, compiler_output_path: Path, input_path: Path, answer_path: Path) -> (StatusCode, dict):
         with open(compiler_output_path, 'r') as output_file, open(answer_path, 'r') as answer_file:
             output_lines = [line.strip() for line in output_file if line.strip()]
             answer_lines = [line.strip() for line in answer_file if line.strip()]
