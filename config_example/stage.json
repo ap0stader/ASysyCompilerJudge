@@ -1,26 +1,35 @@
 {
   "lexical_analysis": {
-    "args": "-L",
-    "testfile_dir": "./testfile/lexical_analysis/"
+    "args": "-LEX",
+    "testfile_dir": "./testfile/lexical_analysis/",
+    "sourcecode_prefix": "testfile",
+    "answer_prefix": "output"
   },
   "syntax_analysis": {
-    "args": "-S",
-    "testfile_dir": "./testfile/syntax_analysis/"
+    "args": "-SYN",
+    "testfile_dir": "./testfile/syntax_analysis/",
+    "sourcecode_prefix": "testfile",
+    "answer_prefix": "output"
   },
   "error_handling": {
-    "args": "-E",
-    "testfile_dir": "./testfile/error_handling"
+    "args": "-ERR",
+    "testfile_dir": "./testfile/error_handling/",
+    "sourcecode_prefix": "testfile",
+    "answer_prefix": "output"
   },
   "code_generation": {
-    "testfile_dir": "./testfile/code_generation",
+    "testfile_dir": "./testfile/code_generation/",
+    "sourcecode_prefix": "testfile",
+    "input_prefix": "input",
+    "answer_prefix": "output",
     "llvm": {
-      "args": "-I"
+      "args": "-LLVM"
     },
     "mips": {
-      "args": "-O0"
+      "args": "-MIPS"
     },
     "mips_optimized": {
-      "args": "-O1"
+      "args": "-OPT"
     }
   }
 }
