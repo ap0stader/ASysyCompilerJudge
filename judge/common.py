@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from util.statuscode import StatusCode
+
 
 class Judge(ABC):
     @abstractmethod
@@ -11,5 +13,5 @@ class Judge(ABC):
         pass
 
     @abstractmethod
-    def judge(self, compiler_output_path: str, input_path: str, answer_path: str):
+    def judge(self, compiler_output_path: str, input_path: str, answer_path: str) -> (StatusCode, dict):
         pass
