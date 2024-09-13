@@ -5,6 +5,10 @@ from util.statuscode import StatusCode
 
 class Analyzer(ABC):
     @abstractmethod
+    def name(self) -> str:
+        pass
+
+    @abstractmethod
     def register_origin(self, origin: str, **kwargs):
         pass
 

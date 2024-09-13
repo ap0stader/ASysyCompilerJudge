@@ -6,11 +6,11 @@ from util.statuscode import StatusCode
 
 class Judge(ABC):
     @abstractmethod
-    def init(self):
+    def name(self) -> str:
         pass
 
     @abstractmethod
-    def name(self) -> str:
+    def init(self):
         pass
 
     @abstractmethod

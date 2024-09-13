@@ -6,13 +6,13 @@ from util.statuscode import StatusCode
 
 class LineCompare(Judge):
     def __init__(self, name):
-        self.name = name
+        self.__name = name
 
     def init(self):
         pass
 
     def name(self) -> str:
-        return self.name
+        return self.__name
 
     def judge(self, compiler_output_path: Path, input_path: Path, answer_path: Path) -> (StatusCode, dict):
         with open(compiler_output_path, 'r') as output_file, open(answer_path, 'r') as answer_file:

@@ -1,6 +1,9 @@
 import json
+import sys
 from pathlib import Path
 
+from analyzer.statbyfile import StatByFile
+from judge.linecompare import LineCompare
 from util.termcolor import RESET, RED, YELLOW, CYAN
 
 __config = None
@@ -16,7 +19,7 @@ __CONFIG_PATH = Path("./config")
 __EXAMPLE_PATH = Path("./config_example")
 
 
-def get():
+def get_config():
     global __config
     if __config is not None:
         return __config
@@ -42,3 +45,44 @@ def get():
 
     __config = config
     return config
+
+
+def get_executor_config(mode: str):
+    match mode:
+        case "lexical_analysis":
+            name = "Lexical Analysis"
+            return {
+                "args": get_config()['stage'][mode]['args'],
+                "judge_configs": [
+                    {
+                        "name": name,
+                        "compiler_output_file": "output.txt",
+                        "judge": LineCompare(name),
+                        "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
+                        "sourcecode_prefix": get_config()['stage'][mode]['sourcecode_prefix'],
+                        "input_prefix": "",
+                        "answer_prefix": get_config()['stage'][mode]['answer_prefix']
+                    }
+                ],
+                "analyzer": StatByFile(name),
+            }, []
+        case "syntax_analysis":
+            name = "Syntax Analysis"
+            return {
+                "args": get_config()['stage'][mode]['args'],
+                "judge_configs": [
+                    {
+                        "name": name,
+                        "compiler_output_file": "output.txt",
+                        "judge": LineCompare(name),
+                        "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
+                        "sourcecode_prefix": get_config()['stage'][mode]['sourcecode_prefix'],
+                        "input_prefix": "",
+                        "answer_prefix": get_config()['stage'][mode]['answer_prefix']
+                    }
+                ],
+                "analyzer": StatByFile(name),
+            }, []
+        case _:
+            print("When get_executor_config(), got wrong mode", file=sys.stderr)
+            exit(1)

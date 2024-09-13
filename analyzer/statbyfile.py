@@ -7,7 +7,10 @@ class StatByFile(Analyzer):
     data = {}
 
     def __init__(self, name: str):
-        self.name = name
+        self.__name = name
+
+    def name(self) -> str:
+        return self.__name
 
     def __get_empty_stat(self) -> dict:
         return {"All": 0, "AC": 0, "PART": 0, "WA": 0, "TLE": 0, "RE": 0, "UNKNOWN": 0}
@@ -43,7 +46,7 @@ class StatByFile(Analyzer):
             self.update_data(status, origin)
 
     def summary_print(self):
-        print("===== " + self.name + " Statistics =====")
+        print("===== " + self.name() + " Statistics =====")
         for origin, stat in self.data.items():
             print("Judge: " + origin)
             print(CYAN + "All: " + RESET + str(stat["All"]), end="\t")
@@ -59,7 +62,7 @@ class StatByFile(Analyzer):
                 print()
 
     def summary_save(self) -> str:
-        strbuilder = "===== " + self.name + " Statistics =====\n"
+        strbuilder = "===== " + self.name() + " Statistics =====\n"
         for origin, stat in self.data.items():
             strbuilder += "Judge: " + origin + "\n"
             strbuilder += "All: " + str(stat["All"]) + "\t"
