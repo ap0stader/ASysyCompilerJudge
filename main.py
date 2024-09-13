@@ -29,7 +29,7 @@ if __name__ == '__main__':
             args = CONFIG['stage']["syntax_analysis"]['args']
         # TODO 增加其他的阶段
         case _:
-            print(RED + "Invalid input" + RESET)
+            print("Invalid input", file=sys.stderr)
             exit(1)
     # 读取配置文件内容
     testfile_dir = Path(CONFIG['stage'][mode]['testfile_dir'])
@@ -40,11 +40,8 @@ if __name__ == '__main__':
     answer_prefix = CONFIG['stage'][mode]['answer_prefix']
     # TODO 增加自定义评测模式
     # 构建执行器
-    executor = Executor(args=args, testfile_dir=testfile_dir,
-                        judge_triple=judge_triple,
-                        sourcecode_prefix=sourcecode_prefix,
-                        input_prefix=input_prefix,
-                        answer_prefix=answer_prefix)
+    executor = Executor(args=args, testfile_path=testfile_dir, judge_triple=judge_triple,
+                        sourcecode_prefix=sourcecode_prefix, input_prefix=input_prefix, answer_prefix=answer_prefix)
     print(">>> Executor is ready!")
     print(">>> Arguments: " + GREEN + args + RESET)
     print(">>> Testfile Directory: " + GREEN + str(testfile_dir) + RESET)

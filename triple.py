@@ -1,3 +1,5 @@
+import sys
+
 from analyzer.statbyfile import StatByFile
 from judge.linecompare import LineCompare
 
@@ -15,4 +17,5 @@ def get(mode: str):
                     StatByFile("Syntax Analysis"))
 
         case _:
-            print("When triple get(), got wrong mode.")
+            print("When triple get(), got wrong mode.", file=sys.stderr)
+            exit(1)

@@ -1,6 +1,7 @@
 # 初始化工作环境
 import os
 import shutil
+import sys
 from pathlib import Path
 
 from util.termcolor import RESET, RED, GREEN, BOLD, ITALIC
@@ -41,7 +42,7 @@ if sure == "Y" or sure == "y":
     print(">>>>>  Create results/")
     results = Path("./results")
     if results.is_file():
-        print(RED + "Previous " + str(results) + " is a file. Please backup and delete it." + RESET)
+        print("Previous " + str(results) + " is a file. Please backup and delete it.", file=sys.stderr)
         exit(1)
     results.mkdir(exist_ok=True)
     print(GREEN + str(results) + " folder created." + RESET)
