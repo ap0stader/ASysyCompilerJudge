@@ -69,7 +69,7 @@ class Java(Lang):
             stdout = stdout.decode().strip()
             stderr = stderr.decode().strip()
             # 转移工作目录
-            shutil.copytree(self.__TEMP_WORKDIR, compiler_all_output_path)
+            shutil.copytree(self.__TEMP_WORKDIR, compiler_all_output_path, dirs_exist_ok=True)
             shutil.rmtree(self.__TEMP_WORKDIR)
             # 判断是否有RE
             if stderr != "":
@@ -79,6 +79,6 @@ class Java(Lang):
         except TimeoutExpired:
             process.kill()
             # 转移工作目录
-            shutil.copytree(self.__TEMP_WORKDIR, compiler_all_output_path)
+            shutil.copytree(self.__TEMP_WORKDIR, compiler_all_output_path, dirs_exist_ok=True)
             shutil.rmtree(self.__TEMP_WORKDIR)
             return StatusCode.EXECUTE_TLE, "", ""

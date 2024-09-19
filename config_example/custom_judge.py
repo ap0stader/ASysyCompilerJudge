@@ -10,10 +10,10 @@ def get() -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
     raise Exception("Custom configuration was not set")
 
 
-def example_different():
+def example_multiple():
     return {
         "args": "-args",
-        "judge_type": "different",  # DO NOT MODIFY
+        "judge_type": "multiple",  # DO NOT MODIFY
         "judge_configs": [
             {
                 "compiler_output_file": "output.txt",
@@ -28,10 +28,10 @@ def example_different():
     }, []
 
 
-def example_same():
+def example_single():
     return {
         "args": "-args",
-        "judge_type": "same",  # DO NOT MODIFY
+        "judge_type": "single",  # DO NOT MODIFY
         "judge_configs": {
             "judge_pairs": [
                 ("compiler_output_file", Judge("name")),
