@@ -1,10 +1,16 @@
 from pathlib import Path
+from typing import Tuple, Dict, Any, List
 
 from analyzer.common import Analyzer
+from executor import ExecutorObserver
 from judge.common import Judge
 
 
-def get_different():
+def get() -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
+    raise Exception("Custom configuration was not set")
+
+
+def example_different():
     return {
         "args": "-args",
         "judge_type": "different",  # DO NOT MODIFY
@@ -13,16 +19,16 @@ def get_different():
                 "compiler_output_file": "output.txt",
                 "judge": Judge("name"),
                 "testfile_path": Path("testfile_path"),
-                "sourcecode_prefix": "sourcecode_prefix",
-                "input_prefix": "input_prefix",
-                "answer_prefix": "answer_prefix"
+                "sourcecode_filename": "sourcecode_filename",
+                "input_filename": "input_filename",
+                "answer_filename": "answer_filename"
             }
         ],
         "analyzer": Analyzer("name"),
     }, []
 
 
-def get_same():
+def example_same():
     return {
         "args": "-args",
         "judge_type": "same",  # DO NOT MODIFY
@@ -31,9 +37,9 @@ def get_same():
                 ("compiler_output_file", Judge("name")),
             ],
             "testfile_path": Path("testfile_path"),
-            "sourcecode_prefix": "sourcecode_prefix",
-            "input_prefix": "input_prefix",
-            "answer_prefix": "answer_prefix"
+            "sourcecode_filename": "sourcecode_filename",
+            "input_filename": "input_filename",
+            "answer_filename": "answer_filename"
         },
         "analyzer": Analyzer("name"),
     }, []

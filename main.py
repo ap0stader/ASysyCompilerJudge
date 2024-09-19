@@ -10,9 +10,9 @@ if __name__ == '__main__':
     CONFIG = configuration.get_config()
 
     print("[1] Lexical Analysis\n"
-          "[2] Syntax Analysis")
-    stage_input = input("Please select the stage_input of your project [1-2] ")
-    # TODO 增加自定义评测模式
+          "[2] Syntax Analysis\n"
+          "[C] Custom\n")
+    stage_input = input("Please select the stage_input of your project [1-2 or C] ")
     # 配置文件模式
     match stage_input:
         case "1":
@@ -22,6 +22,8 @@ if __name__ == '__main__':
             # 语法分析
             mode = "syntax_analysis"
         # TODO 增加其他的阶段
+        case "C":
+            mode = "custom"
         case _:
             print("Invalid input", file=sys.stderr)
             exit(1)
@@ -31,7 +33,7 @@ if __name__ == '__main__':
     # 构建执行器
     executor = Executor(config=executor_config)
     for observer in additional_observer:
-        executor.add_observer(observer)
+        executor.add_observer(observer.get_observer)
     print(">>> Executor is ready!")
     print(">>> Arguments: " + GREEN + executor_config["args"] + RESET)
     print()
@@ -55,7 +57,7 @@ if __name__ == '__main__':
         case _:
             print("Programming language " + lang_input + " is not supported", file=sys.stderr)
             exit(1)
-    executor.add_observer(lang.get_observer(executor=executor))
+    executor.add_observer(lang.get_observer)
     executor.set_execute(lang.execute)
     executor.observe()
 

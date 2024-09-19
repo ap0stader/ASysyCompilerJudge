@@ -1,8 +1,10 @@
 import json
 import sys
 from pathlib import Path
+from typing import Tuple, Dict, Any, List
 
 from analyzer.statbyfile import StatByFile
+from executor import ExecutorObserver
 from judge.linecompare import LineCompare
 from util.termcolor import RESET, RED, YELLOW, CYAN
 
@@ -47,7 +49,7 @@ def get_config():
     return config
 
 
-def get_executor_config(mode: str):
+def get_executor_config(mode: str) -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
     match mode:
         case "lexical_analysis":
             name = "Lexical Analysis"
@@ -56,12 +58,12 @@ def get_executor_config(mode: str):
                 "judge_type": "different",
                 "judge_configs": [
                     {
-                        "compiler_output_file": "output.txt",
+                        "compiler_output_file": get_config()['stage'][mode]['compiler_output_file'],
                         "judge": LineCompare(name),
                         "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
-                        "sourcecode_prefix": get_config()['stage'][mode]['sourcecode_prefix'],
-                        "input_prefix": "",
-                        "answer_prefix": get_config()['stage'][mode]['answer_prefix']
+                        "sourcecode_filename": get_config()['stage'][mode]['sourcecode_filename'],
+                        "input_filename": "",
+                        "answer_filename": get_config()['stage'][mode]['answer_filename']
                     }
                 ],
                 "analyzer": StatByFile(name),
@@ -73,16 +75,19 @@ def get_executor_config(mode: str):
                 "judge_type": "different",
                 "judge_configs": [
                     {
-                        "compiler_output_file": "output.txt",
+                        "compiler_output_file": get_config()['stage'][mode]['compiler_output_file'],
                         "judge": LineCompare(name),
                         "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
-                        "sourcecode_prefix": get_config()['stage'][mode]['sourcecode_prefix'],
-                        "input_prefix": "",
-                        "answer_prefix": get_config()['stage'][mode]['answer_prefix']
+                        "sourcecode_filename": get_config()['stage'][mode]['sourcecode_filename'],
+                        "input_filename": "",
+                        "answer_filename": get_config()['stage'][mode]['answer_filename']
                     }
                 ],
                 "analyzer": StatByFile(name),
             }, []
+        case "custom":
+            import config.custom_judge as custom
+            return custom.get()
         case _:
             print("When get_executor_config(), got wrong mode", file=sys.stderr)
             exit(1)

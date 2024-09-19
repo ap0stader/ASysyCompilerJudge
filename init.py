@@ -51,7 +51,7 @@ if sure == "Y" or sure == "y":
     testfile = Path("./testfile")
     process_folder(testfile)
     for folder in ("lexical_analysis", "syntax_analysis",
-                   "error_handling", "code_generation"):
+                   "semantic_analysis", "code_generation"):
         (testfile / folder).mkdir()
         print(GREEN + str(testfile / folder) + " folder created." + RESET)
     # config文件夹

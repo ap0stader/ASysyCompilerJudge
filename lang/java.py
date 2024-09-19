@@ -45,7 +45,7 @@ class Java(Lang):
             exit(1)
         shutil.copy(jar_path, self.__TEMP_JAR_PATH)
 
-    def get_observer(self, executor: Executor, **kwargs):
+    def get_observer(self, executor: Executor):
         print(">>> Creating Java Observer...")
         # 创建JAR文件的观察者
         observer = Observer()

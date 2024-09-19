@@ -1,6 +1,7 @@
 import os
 import sys
 import time
+from abc import ABC, abstractmethod
 
 from pathlib import Path
 from typing import Callable, List, Tuple
@@ -29,8 +30,8 @@ class Executor:
                 print("Wrong judge type", file=sys.stderr)
                 exit(1)
 
-    def add_observer(self, observer):
-        self.observers.append(observer)
+    def add_observer(self, get_observer: Callable):
+        self.observers.append(get_observer(self))
 
     def set_execute(self, execute: Callable[[str, str, str], Tuple[StatusCode, str, str]]):
         self.execute = execute
@@ -201,3 +202,9 @@ class Executor:
                 info.writelines([">>> Execute stdout\n", execute_stdout, "\n"])
                 info.writelines([">>> Execute stderr\n", execute_stderr, "\n"])
                 self.analyzer.analyze(StatusCode.EXECUTE_UNKNOWN, None, None)
+
+
+class ExecutorObserver(ABC):
+    @abstractmethod
+    def get_observer(self, executor: Executor):
+        pass
