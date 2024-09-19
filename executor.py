@@ -79,11 +79,11 @@ class Executor:
         summary_path = result_files_path / "summary.txt"
         # 准备分析器
         self.analyzer.prepare()
-        print(">>>>> Starting Executor...")
+        print(">>> Starting Executor...")
 
         if self.judge_type == "multiple":
             for judge_config in self.judge_configs:
-                print(">>>>> Judge: " + judge_config["judge"].name())
+                print(">>> Judge: " + judge_config["judge"].name())
                 self.judge(result_files_path=result_files_path,
                            testfile_path=judge_config["testfile_path"],
                            sourcecode_filename=judge_config["sourcecode_filename"],
