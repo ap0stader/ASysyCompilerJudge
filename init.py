@@ -62,7 +62,7 @@ if sure == "Y" or sure == "y":
     config = Path("./config")
     config_example = Path("./config_example")
     process_folder(config, False)
-    # 将示例配置文件复制形成configw文件夹
+    # 将示例配置文件复制形成config文件夹
     shutil.copytree(config_example, config)
     print(GREEN + str(config_example) + " folder copied." + RESET)
     # 写入VERSION文件

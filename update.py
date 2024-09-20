@@ -1,4 +1,6 @@
 # 更新工作环境
+__CURRENT_VERSION = "1.1"
+
 import os
 
 print("=======   ASysyCompilerJudge Update   =======")
@@ -31,28 +33,25 @@ def update_custom_judge():
 # 读取版本文件
 version_path = Path("./VERSION")
 if not version_path.is_file():
-    print(RED + "VERSION file not found!"
+    print(RED + "VERSION file not found!\n"
                 "This program is only for update.\n"
                 "If you have not initialize the environment,\n"
                 "please run init.py instead." + RESET)
     exit(1)
 
+with open(version_path, "r", encoding='utf-8') as version_file:
+    version = version_file.read().strip()
 
-def write_version():
-    with open("./VERSION", "w", encoding='utf-8') as f:
-        f.write("1.1")
+match version:
+    case "1.0":
+        update_custom_judge()
+    case "1.1":
+        pass
+    case _:
+        print("Illegal version!", file=sys.stderr)
+        exit(1)
 
-
-with open(version_path, "r", encoding='utf-8') as f:
-    version = f.read().strip()
-    match version:
-        case "1.0":
-            update_custom_judge()
-            write_version()
-        case "1.1":
-            pass
-        case _:
-            print("Illegal version!", file=sys.stderr)
-            exit(1)
+with open("./VERSION", "w", encoding='utf-8') as version_file:
+    version_file.write(__CURRENT_VERSION)
 
 print(GREEN + "=======           Update End          =======" + RESET)
