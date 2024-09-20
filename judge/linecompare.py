@@ -10,6 +10,9 @@ class LineCompare(Judge):
         pass
 
     def judge(self, compiler_output_path: Path, input_path: Path, answer_path: Path) -> Tuple[StatusCode, dict]:
+        if not compiler_output_path.is_file():
+            return StatusCode.JUDGE_WA, {"info": ("File " + compiler_output_path.name) + " not found!"}
+
         with open(compiler_output_path, 'r') as output_file, open(answer_path, 'r') as answer_file:
             output_lines = [line.strip() for line in output_file if line.strip()]
             answer_lines = [line.strip() for line in answer_file if line.strip()]
