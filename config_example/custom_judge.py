@@ -12,10 +12,10 @@ def get() -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
 
 def example_multiple():
     return {
-        "args": "-args",
         "judge_type": "multiple",  # DO NOT MODIFY
         "judge_configs": [
             {
+                "args": "-args",
                 "compiler_output_file": "output.txt",
                 "judge": Judge("name"),
                 "testfile_path": Path("testfile_path"),
@@ -30,16 +30,14 @@ def example_multiple():
 
 def example_single():
     return {
-        "args": "-args",
         "judge_type": "single",  # DO NOT MODIFY
-        "judge_configs": {
-            "judge_pairs": [
-                ("compiler_output_file", Judge("name")),
-            ],
-            "testfile_path": Path("testfile_path"),
-            "sourcecode_filename": "sourcecode_filename",
-            "input_filename": "input_filename",
-            "answer_filename": "answer_filename"
-        },
+        "args": "-args",
+        "judge_pairs": [
+            ("compiler_output_file", Judge("name")),
+        ],
+        "testfile_path": Path("testfile_path"),
+        "sourcecode_filename": "sourcecode_filename",
+        "input_filename": "input_filename",
+        "answer_filename": "answer_filename",
         "analyzer": Analyzer("name"),
     }, []
