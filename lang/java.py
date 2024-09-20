@@ -61,8 +61,8 @@ class Java(Lang):
         # 拷贝源代码文件
         shutil.copy(sourcecode_path, self.__TEMP_SOURCECODE_PATH)
         # 创建进程
-        command = ["java", "-jar", "../Compiler.jar", args]
-        process = Popen(command, cwd=self.__TEMP_WORKDIR, stdout=PIPE, stderr=PIPE, encoding='utf-8')
+        command = ["java", "-Dfile.encoding=UTF-8", "-jar", "../Compiler.jar", args]
+        process = Popen(command, cwd=self.__TEMP_WORKDIR, stdout=PIPE, stderr=PIPE, encoding='utf-8', errors='replace')
         # 执行进程
         try:
             (stdout, stderr) = process.communicate(timeout=10)
