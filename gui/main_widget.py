@@ -1,4 +1,5 @@
 from typing import Literal
+from json import JSONDecodeError
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QMainWindow, QGridLayout, QWidget, QPushButton, QLabel, QLineEdit,
@@ -8,6 +9,9 @@ from PyQt6.QtWidgets import (QMainWindow, QGridLayout, QWidget, QPushButton, QLa
 
 from gui.helper import get_version
 from gui.helper import StringWrapper as W
+from gui.helper import Configure
+
+from gui.setting_dialog import SettingDialog
 
 
 class MainWidget(QMainWindow):
@@ -107,11 +111,17 @@ class MainWidget(QMainWindow):
         # endregion
 
         # region signal & slot
-        self.btn_settings.clicked.connect(lambda: self.unimplemented("settings"))
+        self.btn_settings.clicked.connect(self.slot_setting)
         self.btn_switch.clicked.connect(lambda: self.unimplemented("switch"))
         self.btn_history.clicked.connect(lambda: self.unimplemented("history"))
         self.btn_force_test.clicked.connect(lambda: self.unimplemented("force-test"))
         # endregion
+
+        self.startup()
+
+    def slot_setting(self):
+        self.append_info("Open Settings ...")
+        SettingDialog(self).exec()
 
     def unimplemented(self, of: str = ""):
         self.append_info("Unimplemented" + (f": {W.code(of)}" if of else ""), "warn")
@@ -123,3 +133,29 @@ class MainWidget(QMainWindow):
             "crit": "style='color: red'"
         }
         self.text_info.append(f"<span {style[type]}><code>{type}> </code>{line}</span>")
+
+    def startup(self):
+        if not Configure.file_exist():
+            self.append_info("配置文件残缺", "crit")
+            self.append_info("请首先执行 " + W.code("init.py") + " 或参照 " + W.code("config_example/") + " 进行修复")
+            self.disable_everything()
+            return
+        try:
+            _ = Configure.get_config(self.append_info)
+        except UnicodeDecodeError as e:
+            self.append_info("配置文件编码错误: " + W.code(repr(e)), "crit")
+            self.append_info("请使用 " + W.code("UTF-8") + " 编码")
+            self.disable_everything()
+            return
+        except JSONDecodeError as e:
+            self.append_info("Json 文件解码错误: " + W.code(repr(e)), "crit")
+            self.disable_everything()
+            return
+        if not Configure.verify(lambda s: self.append_info("配置文件残缺: " + W.code(s), "crit")):
+            self.append_info("请参照 " + W.code("config_example/") + " 进行修复")
+            self.disable_everything()
+            return
+
+    def disable_everything(self):
+        self.append_info("禁用全局交互 ...", "warn")
+        self.setDisabled(True)

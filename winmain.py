@@ -29,7 +29,6 @@ from PyQt6.QtWidgets import QApplication
 
 from gui.main_widget import MainWidget
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
