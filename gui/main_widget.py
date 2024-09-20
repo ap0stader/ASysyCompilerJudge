@@ -154,8 +154,10 @@ class MainWidget(QMainWindow):
         if not Configure.verify(lambda s: self.append_info("配置文件残缺: " + W.code(s), "crit")):
             self.append_info("请参照 " + W.code("config_example/") + " 进行修复")
             self.disable_everything()
+            self.btn_settings.setDisabled(False)  # Allow user to modify the setting
             return
 
     def disable_everything(self):
         self.append_info("禁用全局交互 ...", "warn")
-        self.setDisabled(True)
+        for child in (child for child in self.widget.children() if isinstance(child, QWidget)):
+            child.setDisabled(True)
