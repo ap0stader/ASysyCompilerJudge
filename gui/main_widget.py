@@ -122,6 +122,9 @@ class MainWidget(QMainWindow):
     def slot_setting(self):
         self.append_info("Open Settings ...")
         SettingDialog(self).exec()
+        self.append_info("Re-read settings ...")
+        Configure.reset()
+        self.startup()
 
     def unimplemented(self, of: str = ""):
         self.append_info("Unimplemented" + (f": {W.code(of)}" if of else ""), "warn")
@@ -156,8 +159,13 @@ class MainWidget(QMainWindow):
             self.disable_everything()
             self.btn_settings.setDisabled(False)  # Allow user to modify the setting
             return
+        self.recover_everything()
 
     def disable_everything(self):
         self.append_info("禁用全局交互 ...", "warn")
         for child in (child for child in self.widget.children() if isinstance(child, QWidget)):
             child.setDisabled(True)
+
+    def recover_everything(self):
+        for child in (child for child in self.widget.children() if isinstance(child, QWidget)):
+            child.setDisabled(False)

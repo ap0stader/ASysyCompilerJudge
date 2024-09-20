@@ -84,3 +84,16 @@ def verify(fn_prompt) -> bool:
     )))
 
     return all((ok_command, ok_lang, ok_stage, ok_stage_normal, ok_codegen_normal, ok_codegen))
+
+
+def read_config_file(name: str) -> str:
+    return (__Configure_Path / f"{name}.json").read_text(encoding='utf-8', errors='replace')
+
+
+def write_config_file(name: str, content: str):
+    (__Configure_Path / f"{name}.json").write_text(content, encoding='utf-8', errors='replace')
+
+
+def reset():
+    global __config
+    __config = None
