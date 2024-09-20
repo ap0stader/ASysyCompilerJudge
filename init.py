@@ -1,6 +1,8 @@
 # 初始化工作环境
 import os
 
+print("=======   ASysyCompilerJudge Initialization   =======")
+
 print(">>>>>  Install dependencies")
 if os.system("pip install -r requirements.txt"):
     exit(1)
@@ -9,7 +11,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from util.termcolor import RESET, RED, GREEN, BRIGHT, ITALIC
+from util.termcolor import RESET, RED, GREEN, ITALIC
 
 
 # 删除之前的文件或文件夹，并根据情况决定决定是否创建新的文件夹
@@ -25,12 +27,11 @@ def process_folder(path: Path, created: bool = True):
         print(GREEN + str(path) + " folder created." + RESET)
 
 
-print(BRIGHT + "=======   ASysyCompilerJudge Initialization   =======" + RESET)
 print(RED + "=======               !ATTENTION!             =======\n"
             "ALL files under [runtime/], [testfile/] and [config/]\n"
             "                   WILL LOST FOREVER" + RESET)
 
-sure = input(BRIGHT + "Are you sure? [Y/N]")
+sure = input("Are you sure? [Y/N]")
 
 if sure == "Y" or sure == "y":
     print(GREEN + "=======          Initialization Start         =======" + RESET)
@@ -64,6 +65,9 @@ if sure == "Y" or sure == "y":
     # 将示例配置文件复制形成configw文件夹
     shutil.copytree(config_example, config)
     print(GREEN + str(config_example) + " folder copied." + RESET)
+    # 写入VERSION文件
+    with open("./VERSION", "w", encoding='utf-8') as f:
+        f.write("1.1")
 
     print(GREEN + "=======           Initialization End          =======" + RESET)
     print(ITALIC + "Please configure the judge.\n"

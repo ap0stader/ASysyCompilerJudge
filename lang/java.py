@@ -62,12 +62,12 @@ class Java(Lang):
         shutil.copy(sourcecode_path, self.__TEMP_SOURCECODE_PATH)
         # 创建进程
         command = ["java", "-jar", "../Compiler.jar", args]
-        process = Popen(command, cwd=self.__TEMP_WORKDIR, stdout=PIPE, stderr=PIPE)
+        process = Popen(command, cwd=self.__TEMP_WORKDIR, stdout=PIPE, stderr=PIPE, encoding='utf-8')
         # 执行进程
         try:
             (stdout, stderr) = process.communicate(timeout=10)
-            stdout = stdout.decode().strip()
-            stderr = stderr.decode().strip()
+            stdout = stdout.strip()
+            stderr = stderr.strip()
             # 转移工作目录
             shutil.copytree(self.__TEMP_WORKDIR, compiler_output_dir, dirs_exist_ok=True)
             shutil.rmtree(self.__TEMP_WORKDIR)
