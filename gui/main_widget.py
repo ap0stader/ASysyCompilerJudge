@@ -1,3 +1,5 @@
+from typing import Literal
+
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QMainWindow, QGridLayout, QWidget, QPushButton, QLabel, QLineEdit,
                              QButtonGroup, QRadioButton, QGroupBox, QVBoxLayout, QProgressBar,
@@ -5,6 +7,7 @@ from PyQt6.QtWidgets import (QMainWindow, QGridLayout, QWidget, QPushButton, QLa
 
 
 from gui.helper import get_version
+from gui.helper import StringWrapper as W
 
 
 class MainWidget(QMainWindow):
@@ -102,3 +105,21 @@ class MainWidget(QMainWindow):
         self.text_info.setReadOnly(True)
         self.group_info_layout.addWidget(self.text_info)
         # endregion
+
+        # region signal & slot
+        self.btn_settings.clicked.connect(lambda: self.unimplemented("settings"))
+        self.btn_switch.clicked.connect(lambda: self.unimplemented("switch"))
+        self.btn_history.clicked.connect(lambda: self.unimplemented("history"))
+        self.btn_force_test.clicked.connect(lambda: self.unimplemented("force-test"))
+        # endregion
+
+    def unimplemented(self, of: str = ""):
+        self.append_info("Unimplemented" + (f": {W.code(of)}" if of else ""), "warn")
+
+    def append_info(self, line: str, type: Literal["info", "warn", "crit"] = "info"):
+        style = {
+            "info": "",
+            "warn": "style='color: yellow'",
+            "crit": "style='color: red'"
+        }
+        self.text_info.append(f"<span {style[type]}><code>{type}> </code>{line}</span>")
