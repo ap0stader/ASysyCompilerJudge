@@ -1,13 +1,17 @@
-RESET = '\033[0m'
+from colorama import just_fix_windows_console, Fore, Style
 
-RED = '\033[91m'
-GREEN = '\033[92m'
-YELLOW = '\033[93m'
-BLUE = '\033[94m'
-PURPLE = '\033[95m'
-CYAN = '\033[96m'
+# 使用colorama库的方法支持Windows的控制台显示彩色
+just_fix_windows_console()
 
-BOLD = '\033[1m'
+RESET = Style.RESET_ALL
+
+RED = Fore.RED
+GREEN = Fore.GREEN
+YELLOW = Fore.YELLOW
+BLUE = Fore.BLUE
+MAGENTA = Fore.MAGENTA
+CYAN = Fore.CYAN
+
+BRIGHT = Style.BRIGHT
 ITALIC = '\033[3m'
-UNDERLINE = '\033[4m'
-INVERSE = '\033[7m'
+INVERT = '\033[7m'
