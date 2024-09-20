@@ -1,5 +1,10 @@
 # 初始化工作环境
 import os
+
+print(">>>>>  Install dependencies")
+if os.system("pip install -r requirements.txt"):
+    exit(1)
+
 import shutil
 import sys
 from pathlib import Path
@@ -30,9 +35,6 @@ sure = input(BRIGHT + "Are you sure? [Y/N]")
 if sure == "Y" or sure == "y":
     print(GREEN + "=======          Initialization Start         =======" + RESET)
 
-    print(">>>>>  Install dependencies")
-    if os.system("pip install -r requirements.txt"):
-        exit(1)
     # runtime文件夹
     print(">>>>>  Create runtime/")
     runtime = Path("./runtime")
