@@ -3,17 +3,17 @@ import sys
 import configuration
 
 from executor import Executor
-from util.termcolor import RESET, RED, GREEN, INVERSE
+from util.termcolor import RESET, RED, GREEN, INVERT
 
 if __name__ == '__main__':
     print(">>> Parsing configurations...")
+    # 解析配置文件
     CONFIG = configuration.get_config()
 
     print("[1] Lexical Analysis\n"
           "[2] Syntax Analysis\n"
           "[C] Custom\n")
-    stage_input = input("Please select the stage_input of your project [1-2 or C] ")
-    # 配置文件模式
+    stage_input = input("Please select the stage of your project [1-2 or C] ")
     match stage_input:
         case "1":
             # 词法分析
@@ -23,11 +23,12 @@ if __name__ == '__main__':
             mode = "syntax_analysis"
         # TODO 增加其他的阶段
         case "C":
+            # 自定义评测
             mode = "custom"
         case _:
             print("Invalid input", file=sys.stderr)
             exit(1)
-    # 读取配置文件内容
+    # 获取执行配置和额外的监视器
     executor_config, additional_observer = configuration.get_executor_config(mode=mode)
 
     # 构建执行器
@@ -38,12 +39,12 @@ if __name__ == '__main__':
     print(">>> Arguments: " + GREEN + executor_config["args"] + RESET)
     print()
 
-    lang_input = CONFIG['lang']['programming language']
+    lang_input = CONFIG["lang"]["programming language"]
     match lang_input:
-        case 'java':
-            jar_path = CONFIG['lang']['java']['jar_path']
+        case "java":
+            jar_path = CONFIG["lang"]["java"]["jar_path"]
             print("- Programming language: " + RED + "Java" + RESET)
-            print("- JAR file path: " + INVERSE + str(jar_path) + RESET)
+            print("- JAR file path: " + INVERT + str(jar_path) + RESET)
             from lang.java import Java
 
             start = input("Start observing JAR file? [Y/N] ")
