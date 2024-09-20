@@ -3,7 +3,7 @@ import sys
 import configuration
 
 from executor import Executor
-from util.termcolor import RESET, RED, GREEN, INVERT
+from util.termcolor import RESET, RED, INVERT
 
 if __name__ == '__main__':
     print(">>> Parsing configurations...")
@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     print("[1] Lexical Analysis\n"
           "[2] Syntax Analysis\n"
-          "[C] Custom\n")
+          "[C] Custom")
     stage_input = input("Please select the stage of your project [1-2 or C] ")
     match stage_input:
         case "1":
@@ -35,9 +35,7 @@ if __name__ == '__main__':
     executor = Executor(config=executor_config)
     for observer in additional_observer:
         executor.add_observer(observer.get_observer)
-    print(">>> Executor is ready!")
-    print(">>> Arguments: " + GREEN + executor_config["args"] + RESET)
-    print()
+    print(">>> Executor is ready!\n")
 
     lang_input = CONFIG["lang"]["programming language"]
     match lang_input:

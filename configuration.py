@@ -64,14 +64,16 @@ def get_executor_config(mode: str) -> Tuple[Dict[str, Any], List[ExecutorObserve
             name = "UNKNOWN ERROR"
         return {
             "judge_type": "single",
-            "args": get_config()["stage"][mode]["args"],
-            "judge_pairs": [
-                (get_config()["stage"][mode]["compiler_output_file"], LineCompare(name)),
-            ],
-            "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
-            "sourcecode_filename": get_config()["stage"][mode]["sourcecode_filename"],
-            "input_filename": None,
-            "answer_filename": get_config()["stage"][mode]["answer_filename"],
+            "judge_configs": {
+                "args": get_config()["stage"][mode]["args"],
+                "judge_pairs": [
+                    (get_config()["stage"][mode]["compiler_output_file"], LineCompare(name)),
+                ],
+                "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+                "sourcecode_filename": get_config()["stage"][mode]["sourcecode_filename"],
+                "input_filename": None,
+                "answer_filename": get_config()["stage"][mode]["answer_filename"],
+            },
             "analyzer": StatByFile(name),
         }, []
     else:

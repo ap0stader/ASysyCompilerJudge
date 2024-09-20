@@ -31,13 +31,15 @@ def example_multiple():
 def example_single():
     return {
         "judge_type": "single",  # DO NOT MODIFY
-        "args": "-args",
-        "judge_pairs": [
-            ("compiler_output_file", Judge("name")),
-        ],
-        "testfile_path": Path("testfile_path"),
-        "sourcecode_filename": "sourcecode_filename",
-        "input_filename": "input_filename",
-        "answer_filename": "answer_filename",
+        "judge_configs": {
+            "args": "-args",
+            "judge_pairs": [
+                ("compiler_output_file", Judge("name")),
+            ],
+            "testfile_path": Path("testfile_path"),
+            "sourcecode_filename": "sourcecode_filename",
+            "input_filename": "input_filename",
+            "answer_filename": "answer_filename",
+        },
         "analyzer": Analyzer("name"),
     }, []
