@@ -4,7 +4,7 @@ import os
 print("=======   ASysyCompilerJudge Update   =======")
 
 # 根据最新的requirements.txt安装依赖
-print(">>>>>  Update dependencies")
+print(">>>>> Update dependencies")
 if os.system("pip install -r requirements.txt"):
     exit(1)
 

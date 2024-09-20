@@ -3,7 +3,7 @@ import os
 
 print("=======   ASysyCompilerJudge Initialization   =======")
 
-print(">>>>>  Install dependencies")
+print(">>>>> Install dependencies")
 if os.system("pip install -r requirements.txt"):
     exit(1)
 
@@ -37,11 +37,11 @@ if sure == "Y" or sure == "y":
     print(GREEN + "=======          Initialization Start         =======" + RESET)
 
     # runtime文件夹
-    print(">>>>>  Create runtime/")
+    print(">>>>> Create runtime/")
     runtime = Path("./runtime")
     process_folder(runtime)
     # results文件夹
-    print(">>>>>  Create results/")
+    print(">>>>> Create results/")
     results = Path("./results")
     if results.is_file():
         print("Previous " + str(results) + " is a file. Please backup and delete it.", file=sys.stderr)
@@ -50,7 +50,7 @@ if sure == "Y" or sure == "y":
     results.mkdir(exist_ok=True)
     print(GREEN + str(results) + " folder created." + RESET)
     # testfile文件夹
-    print(">>>>>  Create testfile/")
+    print(">>>>> Create testfile/")
     testfile = Path("./testfile")
     process_folder(testfile)
     for folder in ("lexical_analysis", "syntax_analysis",
@@ -58,7 +58,7 @@ if sure == "Y" or sure == "y":
         (testfile / folder).mkdir()
         print(GREEN + str(testfile / folder) + " folder created." + RESET)
     # config文件夹
-    print(">>>>>  Create config/")
+    print(">>>>> Create config/")
     config = Path("./config")
     config_example = Path("./config_example")
     process_folder(config, False)
