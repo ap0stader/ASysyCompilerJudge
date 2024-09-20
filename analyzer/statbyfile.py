@@ -1,16 +1,16 @@
 from analyzer.common import Analyzer
 from util.statuscode import StatusCode
-from util.termcolor import RESET, RED, GREEN, YELLOW, BLUE, PURPLE, CYAN
+from util.termcolor import RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN
 
 
 def get_empty_stat() -> dict:
-    return {"All": 0, "AC": 0, "PART": 0, "WA": 0, "TLE": 0, "RE": 0, "UNKNOWN": 0}
+    return {"ALL": 0, "AC": 0, "PART": 0, "WA": 0, "TLE": 0, "RE": 0, "UNKNOWN": 0}
 
 
 class StatByFile(Analyzer):
     __data = {}
 
-    def register_origin(self, origin: str, **kwargs):
+    def register_origin(self, origin: str):
         self.__data[origin] = get_empty_stat()
 
     def prepare(self):
@@ -18,7 +18,7 @@ class StatByFile(Analyzer):
             self.__data[key] = get_empty_stat()
 
     def update_data(self, status: StatusCode, origin: str):
-        self.__data[origin]["All"] += 1
+        self.__data[origin]["ALL"] += 1
         match status:
             case StatusCode.JUDGE_AC:
                 self.__data[origin]["AC"] += 1
@@ -44,27 +44,31 @@ class StatByFile(Analyzer):
         print("===== " + self.name() + " Statistics =====")
         for origin, stat in self.__data.items():
             print("Judge: " + origin)
-            print(CYAN + "All: " + RESET + str(stat["All"]), end="\t")
-            print(GREEN + "AC: " + RESET + str(stat["AC"]), end="\t")
+
+            print(CYAN + "ALL: " + RESET + f"{stat['ALL']:<5}", end="")
+            print(GREEN + "AC: " + RESET + f"{stat['AC']:<5}", end="")
             if stat["PART"] != 0:
-                print(YELLOW + "PART: " + RESET + str(stat["PART"]), end="\t")
-            print(RED + "WA: " + RESET + str(stat["WA"]), end="\t")
-            print(BLUE + "TLE: " + RESET + str(stat["TLE"]), end="\t")
-            print(PURPLE + "RE: " + RESET + str(stat["RE"]), end="\t")
+                print(YELLOW + "PART: " + RESET + f"{stat['PART']:<5}", end="")
+            print(RED + "WA: " + RESET + f"{stat['WA']:<5}", end="")
+            print(BLUE + "TLE: " + RESET + f"{stat['TLE']:<5}", end="")
+            print(MAGENTA + "RE: " + RESET + f"{stat['RE']:<5}", end="")
             if stat["UNKNOWN"] != 0:
-                print("UNKNOWN: " + str(stat["UNKNOWN"]))
+                print("UNKNOWN: " + f"{stat['UNKNOWN']:<5}", flush=True)
             else:
-                print()
+                print(flush=True)
 
     def summary_save(self) -> str:
         strbuilder = "===== " + self.name() + " Statistics =====\n"
         for origin, stat in self.__data.items():
             strbuilder += "Judge: " + origin + "\n"
-            strbuilder += "All: " + str(stat["All"]) + "\t"
-            strbuilder += "AC: " + str(stat["AC"]) + "\t"
-            strbuilder += "PART: " + str(stat["PART"]) + "\t"
-            strbuilder += "WA: " + str(stat["WA"]) + "\t"
-            strbuilder += "TLE: " + str(stat["TLE"]) + "\t"
-            strbuilder += "RE: " + str(stat["RE"]) + "\t"
-            strbuilder += "UNKNOWN: " + str(stat["UNKNOWN"]) + "\n"
-        return strbuilder
+
+            strbuilder += "ALL: " + f"{stat['ALL']:<5}"
+            strbuilder += "AC: " + f"{stat['AC']:<5}"
+            if stat["PART"] != 0:
+                strbuilder += "PART: " + f"{stat['PART']:<5}"
+            strbuilder += "WA: " + f"{stat['WA']:<5}"
+            strbuilder += "TLE: " + f"{stat['TLE']:<5}"
+            strbuilder += "RE: " + f"{stat['RE']:<5}"
+            if stat["UNKNOWN"] != 0:
+                strbuilder += "UNKNOWN: " + f"{stat['UNKNOWN']:<5}"
+        return strbuilder + "\n"

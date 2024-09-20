@@ -13,7 +13,7 @@ class Analyzer(ABC):
         return self.__name
 
     @abstractmethod
-    def register_origin(self, origin: str, **kwargs):
+    def register_origin(self, origin: str):
         pass
 
     @abstractmethod
