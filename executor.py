@@ -108,7 +108,7 @@ class Executor:
         with open(summary_path, "w", encoding='utf-8') as summary:
             summary.write(self.analyzer.summary_save())
         print("Results folder: runtime/results/" + GREEN + now + RESET)
-        print(">>> Finished judge! Continuing... ")
+        print(">>> Judge finished! Continuing... ")
 
     def judge(self, args: str, result_dir: Path,
               testfile_path: Path, sourcecode_filename: str, input_filename: str, answer_filename: str,
