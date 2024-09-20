@@ -41,7 +41,7 @@ class Java(Lang):
         self.jar_name = os.path.basename(jar_path)
         # 判断文件是否存在
         if not Path(jar_path).is_file():
-            print("The JAR file configuration was wrong.", file=sys.stderr)
+            print("The jar_path configuration was wrong.", file=sys.stderr)
             exit(1)
         shutil.copy(jar_path, self.__TEMP_JAR_PATH)
 
