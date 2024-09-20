@@ -18,7 +18,7 @@ from util.termcolor import RESET, RED, GREEN, CYAN
 # 升级custom_judge.py
 def update_custom_judge():
     print(">>>>> Update custom_judge.py")
-    custom_judge_input = input("A new version of custom_judge.py is prepared. Do you want to continue? [Y/N] ")
+    custom_judge_input = input("A new version of custom_judge.py is prepared. Do you want to replace? [Y/N] ")
     if custom_judge_input.upper() == "Y":
         custom_judge_example_path = Path("./config_example/custom_judge.py")
         custom_judge_path = Path("./config/custom_judge.py")
