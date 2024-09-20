@@ -21,6 +21,7 @@ __CONFIG_PATH = Path("./config")
 __EXAMPLE_PATH = Path("./config_example")
 
 
+# 解析配置文件
 def get_config():
     global __config
     if __config is not None:
@@ -49,45 +50,33 @@ def get_config():
     return config
 
 
+# 根据配置文件和指定模式返回执行配置和额外的监视器
 def get_executor_config(mode: str) -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
-    match mode:
-        case "lexical_analysis":
+    if mode == "custom":
+        import config.custom_judge as custom
+        return custom.get()
+    elif mode == "lexical_analysis" or mode == "syntax_analysis":
+        if mode == "lexical_analysis":
             name = "Lexical Analysis"
-            return {
-                "args": get_config()['stage'][mode]['args'],
-                "judge_type": "multiple",
-                "judge_configs": [
-                    {
-                        "compiler_output_file": get_config()['stage'][mode]['compiler_output_file'],
-                        "judge": LineCompare(name),
-                        "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
-                        "sourcecode_filename": get_config()['stage'][mode]['sourcecode_filename'],
-                        "input_filename": None,
-                        "answer_filename": get_config()['stage'][mode]['answer_filename']
-                    }
-                ],
-                "analyzer": StatByFile(name),
-            }, []
-        case "syntax_analysis":
+        elif mode == "syntax_analysis":
             name = "Syntax Analysis"
-            return {
-                "args": get_config()['stage'][mode]['args'],
-                "judge_type": "multiple",
-                "judge_configs": [
-                    {
-                        "compiler_output_file": get_config()['stage'][mode]['compiler_output_file'],
-                        "judge": LineCompare(name),
-                        "testfile_path": Path(get_config()['stage'][mode]['testfile_path']),
-                        "sourcecode_filename": get_config()['stage'][mode]['sourcecode_filename'],
-                        "input_filename": None,
-                        "answer_filename": get_config()['stage'][mode]['answer_filename']
-                    }
-                ],
-                "analyzer": StatByFile(name),
-            }, []
-        case "custom":
-            import config.custom_judge as custom
-            return custom.get()
-        case _:
-            print("When get_executor_config(), got wrong mode", file=sys.stderr)
-            exit(1)
+        else:
+            name = "UNKNOWN ERROR"
+        return {
+            "args": get_config()["stage"][mode]["args"],
+            "judge_type": "multiple",
+            "judge_configs": [
+                {
+                    "compiler_output_file": get_config()["stage"][mode]["compiler_output_file"],
+                    "judge": LineCompare(name),
+                    "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+                    "sourcecode_filename": get_config()["stage"][mode]["sourcecode_filename"],
+                    "input_filename": None,
+                    "answer_filename": get_config()["stage"][mode]["answer_filename"]
+                }
+            ],
+            "analyzer": StatByFile(name),
+        }, []
+    else:
+        print("When get_executor_config(), got wrong mode", file=sys.stderr)
+        exit(1)
