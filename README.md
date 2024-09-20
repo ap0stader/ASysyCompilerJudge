@@ -28,19 +28,43 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 评测功能：
 
 - [x] JAR文件自动拉取评测（已完成）(@Ap0stader)
+- [ ] GUI（开发中）(@swkfk)
 - [x] 自定义评测（已完成）(@Ap0stader)
 - [x] MARS执行周期统计（已完成）(@swkfk)
-- [ ] VSCode中打开与比较文件指令
+- [ ] VSCode打开与比较文件指令
 - [ ] 测试文件持续监控评测
+
+## 如何更新
+
+1. 本项目仍在快速迭代中，稳定的分支为**main分支**，
+
+2. 更新时，请先拉取，然后运行**update.py**。
+
+   ```shell
+   $ git pull
+   $ python update.py
+   ```
+
+3. update.py将引导完成有冲突的升级工作。
+
+   ```shell
+   $ python update.py
+   =======   ASysyCompilerJudge Update   =======
+   >>>>>  Update dependencies
+   ......
+   >>>>> Update custom_judge.py
+   A new version of custom_judge.py is prepared. Do you want to continue? [Y/N] 
+   ......
+   ```
 
 ## 如何使用
 
 ### 说明
 
-1. **本项目暂未进行Python最低可运行版本的测试，但是应至少运行在Python3.10及以上版本。**可通过以下指令查看Python版本。如果有多Python环境需求，可以考虑使用[Miniconda](https://docs.anaconda.com/miniconda/)或[Anaconda](https://docs.anaconda.com/anaconda/)。
+1. 本项目暂未进行Python最低可运行版本的测试，**但是应至少运行在Python3.10及以上版本。**可通过以下指令查看Python版本。如果有多Python环境需求，可以考虑使用[Miniconda](https://docs.anaconda.com/miniconda/)或[Anaconda](https://docs.anaconda.com/anaconda/)。
 
    ```shell
-   $ python3 --version
+   $ python --version
    Python 3.11.9
    ```
 
@@ -57,13 +81,13 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 2. 安装依赖库与初始化文件目录。**注意，初始化时将会清空runtime、testfile和config三个文件夹中的所有文件。若之前已建立这些文件夹，请先行备份其中数据再进行初始化。**
 
    ```shell
-   $ python3 init.py
+   $ python init.py
    ```
 
    执行到此处即为成功
 
    ```
-   ............
+   ......
    =======           Initialization End          =======
    Please configure the judge.
    See README.md for more details.
@@ -87,7 +111,8 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
      "java": {
        "jar_path": "PATH_TO_JAR"
        // Linux/macOS示例："jar_path": "/Users/ap0stader/Compiler/artifacts/Compiler.jar"
-       // Windows示例："jar_path": "D:\Compiler\artifacts\Compiler.jar"
+       // Windows示例："jar_path": "D:\\Compiler\\artifacts\\Compiler.jar"
+       // Windows注意反斜杠需要转义！
      }
    }
    ```
@@ -101,7 +126,6 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    │   ├── A
    │   │   ├── testcase1
    │   │   │   ├── ans.txt
-   │   │   │   ├── config.json
    │   │   │   ├── in.txt
    │   │   │   └── testfile.txt
    │   │   └── ...
@@ -114,19 +138,17 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    ├── semantic_analysis
    └── syntax_analysis
    ```
-
+   
 6. 启动测评机，选择需要评测的阶段，**确认启动测评机**。启动测评机后，将自动进行第一次测评。
 
    ```shell
-   $ python3 main.py
+   $ python main.py
    >>> Parsing configurations...
    [1] Lexical Analysis
    [2] Syntax Analysis
    [C] Custom
-   
    Please select the stage_input of your project [1-2 or C] 1
    >>> Executor is ready!
-   >>> Arguments: -SYN
    
    - Programming language: Java
    - JAR file path: PATH_TO_JAR
@@ -136,20 +158,33 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    >>> All Observer Started!
    >>> Press Ctrl+C to exit.
    >>> Starting Executor...
-   >>> Judge: Lexical Analysis
-   No.1  Sourcecode: ...
-   ......
+   No. 1  ......
    ```
-
+   
 7. 若开发语言为Java，在使用IDEA等开发工具生成新的JAR之后，评测机将**自动拉取新生成的JAR并自动进行测评**。
 
    ```
    ...
-   Results folder: runtime/results/...
-   >>> Finished judge! Continuing... 
+   Results folder: results/...
+   >>> Judge finished! Continuing... 
    New Compiler.jar has been detected and copied.
    >>> Starting Executor...
-   >>> Judge: Lexical Analysis
-   No.67	Sourcecode: ...
-   ......
+   No. 67  ......
+   ```
+
+8. 测评完成后，可在results文件中查看生成的测评结果。其中的文件夹以测评开始的时间的命名。每个文件夹中的summary.txt为**测评信息摘要**。其他部分按照导入的测试程序文件结构组织。与每个测试点testfile.txt同级的info.txt为该**测试点运行和评测的信息**。
+
+   ```
+   ...
+   ├── A
+   │   ├── testcase1
+   │   │   ├── info.txt
+   │   │   ├── lexer.txt
+   │   │   └── testfile.txt
+   │   └── ...
+   ├── B
+   │   └── ...
+   ├── C
+   │   └── ...
+   └── summary.txt
    ```

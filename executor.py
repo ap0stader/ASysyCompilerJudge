@@ -105,10 +105,10 @@ class Executor:
                        judge_pairs=self.judge_configs["judge_pairs"])
 
         self.analyzer.summary_print()
-        with open(summary_path, "w") as summary:
+        with open(summary_path, "w", encoding='utf-8') as summary:
             summary.write(self.analyzer.summary_save())
-        print("Results folder: runtime/results/" + GREEN + now + RESET)
-        print(">>> Finished judge! Continuing... ")
+        print("Results folder: results/" + GREEN + now + RESET)
+        print(">>> Judge finished! Continuing... ")
 
     def judge(self, args: str, result_dir: Path,
               testfile_path: Path, sourcecode_filename: str, input_filename: str, answer_filename: str,
@@ -134,7 +134,7 @@ class Executor:
             # 评测信息文件
             info_path = testcase_result_dir / "info.txt"
             # 拉起一次测试
-            with open(info_path, "w") as info:
+            with open(info_path, "w", encoding='utf-8') as info:
                 self.test_index += 1
                 print(f"No. {self.test_index:<4} Testcase: {str(testcase_relative_path):<16}", end=" ", flush=True)
                 execute_result, execute_stdout, execute_stderr = self.execute(args=args,

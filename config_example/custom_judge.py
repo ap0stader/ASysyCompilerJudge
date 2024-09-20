@@ -39,7 +39,7 @@ def example_single():
             "testfile_path": Path("testfile_path"),
             "sourcecode_filename": "sourcecode_filename",
             "input_filename": "input_filename",
-            "answer_filename": "answer_filename",
+            "answer_filename": "answer_filename"
         },
         "analyzer": Analyzer("name"),
     }, []

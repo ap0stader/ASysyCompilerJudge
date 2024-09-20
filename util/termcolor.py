@@ -14,4 +14,5 @@ CYAN = Fore.CYAN
 
 BRIGHT = Style.BRIGHT
 ITALIC = '\033[3m'
+UNDERLINE = '\033[4m'
 INVERT = '\033[7m'

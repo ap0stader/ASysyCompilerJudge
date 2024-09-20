@@ -1,32 +1,58 @@
 # 更新工作环境
 import os
+
+print("=======   ASysyCompilerJudge Update   =======")
+
+# 根据最新的requirements.txt安装依赖
+print(">>>>> Update dependencies")
+if os.system("pip install -r requirements.txt"):
+    exit(1)
+
 import shutil
+import sys
 from pathlib import Path
 
-from util.termcolor import RESET, RED, GREEN, BRIGHT
+from util.termcolor import RESET, RED, GREEN, CYAN
 
-print(BRIGHT + "=======   ASysyCompilerJudge Update   =======" + RESET)
-print(RED + "This program is only for update.\n"
-            "If you have not initialize the environment,\n"
-            "please run init.py instead." + RESET)
 
-sure = input(BRIGHT + "Are you sure? [Y/N]")
-
-if sure == "Y" or sure == "y":
-    # 根据最新的requirements.txt安装依赖
-    print(">>>>>  Update dependencies")
-    if os.system("pip install -r requirements.txt"):
-        exit(1)
-    # 升级custom_judge.py
-    print(">>>>>  Update custom_judge.py")
+# 升级custom_judge.py
+def update_custom_judge():
+    print(">>>>> Update custom_judge.py")
     custom_judge_input = input("A new version of custom_judge.py is prepared. Do you want to continue? [Y/N] ")
     if custom_judge_input.upper() == "Y":
         custom_judge_example_path = Path("./config_example/custom_judge.py")
         custom_judge_path = Path("./config/custom_judge.py")
         shutil.copy(custom_judge_example_path, custom_judge_path)
         print(GREEN + "New custom_judge.py copied." + RESET)
+    else:
+        print(CYAN + "Ignored." + RESET)
 
-    print(GREEN + "=======           Update End          =======" + RESET)
 
-else:
-    print("Canceled.")
+# 读取版本文件
+version_path = Path("./VERSION")
+if not version_path.is_file():
+    print(RED + "VERSION file not found!"
+                "This program is only for update.\n"
+                "If you have not initialize the environment,\n"
+                "please run init.py instead." + RESET)
+    exit(1)
+
+
+def write_version():
+    with open("./VERSION", "w", encoding='utf-8') as f:
+        f.write("1.1")
+
+
+with open(version_path, "r", encoding='utf-8') as f:
+    version = f.read().strip()
+    match version:
+        case "1.0":
+            update_custom_judge()
+            write_version()
+        case "1.1":
+            pass
+        case _:
+            print("Illegal version!", file=sys.stderr)
+            exit(1)
+
+print(GREEN + "=======           Update End          =======" + RESET)
