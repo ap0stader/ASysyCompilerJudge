@@ -11,7 +11,7 @@ from watchdog.observers import Observer
 from executor import Executor
 from lang.common import Lang
 from util.statuscode import StatusCode
-from util.termcolor import RESET, INVERSE
+from util.termcolor import RESET, INVERT
 
 
 class Java(Lang):
@@ -28,7 +28,7 @@ class Java(Lang):
 
         def on_created(self, event):
             if not event.is_directory and os.path.basename(event.src_path) == self.jar_name:
-                print("New " + INVERSE + self.jar_name + RESET + " has been detected", end="")
+                print("New " + INVERT + self.jar_name + RESET + " has been detected", end="")
                 shutil.copy(event.src_path, self.temp_jar_path)
                 print(" and copied.")
                 self.executor.start()
@@ -55,13 +55,13 @@ class Java(Lang):
         observer.schedule(handler, self.jar_dir)
         return observer
 
-    def execute(self, args: str, sourcecode_path: str, compiler_all_output_path: str) -> Tuple[StatusCode, str, str]:
+    def execute(self, args: str, sourcecode_path: Path, compiler_output_dir: Path) -> Tuple[StatusCode, str, str]:
         # 创建工作目录
         self.__TEMP_WORKDIR.mkdir(exist_ok=True)
         # 拷贝源代码文件
         shutil.copy(sourcecode_path, self.__TEMP_SOURCECODE_PATH)
         # 创建进程
-        command = ['java', '-jar', '../Compiler.jar', args]
+        command = ["java", "-jar", "../Compiler.jar", args]
         process = Popen(command, cwd=self.__TEMP_WORKDIR, stdout=PIPE, stderr=PIPE)
         # 执行进程
         try:
@@ -69,7 +69,7 @@ class Java(Lang):
             stdout = stdout.decode().strip()
             stderr = stderr.decode().strip()
             # 转移工作目录
-            shutil.copytree(self.__TEMP_WORKDIR, compiler_all_output_path, dirs_exist_ok=True)
+            shutil.copytree(self.__TEMP_WORKDIR, compiler_output_dir, dirs_exist_ok=True)
             shutil.rmtree(self.__TEMP_WORKDIR)
             # 判断是否有RE
             if stderr != "":
@@ -79,6 +79,6 @@ class Java(Lang):
         except TimeoutExpired:
             process.kill()
             # 转移工作目录
-            shutil.copytree(self.__TEMP_WORKDIR, compiler_all_output_path, dirs_exist_ok=True)
+            shutil.copytree(self.__TEMP_WORKDIR, compiler_output_dir, dirs_exist_ok=True)
             shutil.rmtree(self.__TEMP_WORKDIR)
             return StatusCode.EXECUTE_TLE, "", ""
