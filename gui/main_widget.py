@@ -40,7 +40,7 @@ class MainWidget(QMainWindow):
         self.btn_settings = QPushButton("设置", self.widget)
         self.layout.addWidget(self.btn_settings, 0, 0, 1, 2)
 
-        self.btn_switch = QPushButton("启动测评", self.widget)
+        self.btn_switch = QPushButton("启动监测", self.widget)
         self.layout.addWidget(self.btn_switch, 1, 0, 1, 2)
 
         self.btn_history = QPushButton("测评记录", self.widget)
@@ -101,7 +101,7 @@ class MainWidget(QMainWindow):
         self.disp_watchdog.setReadOnly(True)
         self.layout.addWidget(self.disp_watchdog, 1, 4, 1, 2)
 
-        self.btn_force_test = QPushButton("立即进行测评", self.widget)
+        self.btn_force_test = QPushButton("强制测评一次", self.widget)
         self.layout.addWidget(self.btn_force_test, 1, 6, 1, 3)
         # endregion
 
@@ -162,8 +162,8 @@ class MainWidget(QMainWindow):
         self.launch_executor()
 
     def slot_toggle_watch(self):
-        if self.btn_switch.text() == "启动测评":
-            self.btn_switch.setText("停止测评")
+        if self.btn_switch.text() == "启动监测":
+            self.btn_switch.setText("停止监测")
             # Stupid thread.stop!
             self.observer = Observer()
             self.observer.schedule(
@@ -173,8 +173,8 @@ class MainWidget(QMainWindow):
             self.observer.start()
             self.update_watchdog(False, True)
             self.append_info("Watchdog 线程启动")
-        elif self.btn_switch.text() == "停止测评":
-            self.btn_switch.setText("启动测评")
+        elif self.btn_switch.text() == "停止监测":
+            self.btn_switch.setText("启动监测")
             self.observer.stop()
             self.update_watchdog(False, False)
             self.append_info("Watchdog 停止检测")
@@ -240,7 +240,7 @@ class MainWidget(QMainWindow):
         try: self.observer.stop()
         except: pass
 
-        self.btn_switch.setText("启动测评")
+        self.btn_switch.setText("启动监测")
 
         self.handler = FileModifyHandler(self, Configure.get_config()["lang"]["java"]["jar_path"])
         self.handler.sig_modified.connect(self.slot_file_modified)
@@ -271,7 +271,18 @@ class MainWidget(QMainWindow):
         else:
             self.disp_watchdog.setText("就绪")
 
+    def mark_start_executor(self):
+        self.btn_settings.setDisabled(True)
+        self.btn_force_test.setDisabled(True)
+        self.btn_switch.setDisabled(True)
+
+    def mark_finish_executor(self):
+        self.btn_settings.setDisabled(False)
+        self.btn_force_test.setDisabled(False)
+        self.btn_switch.setDisabled(False)
+
     def launch_executor(self):
+        self.mark_start_executor()
         case_count = len(
             tests := Testcase.get_list(Configure.get_config()["stage"][Configure.get_var("mode")]["testfile_path"])
         )
@@ -282,5 +293,6 @@ class MainWidget(QMainWindow):
         self.executor_thread = ExecutorThread(self, tests)
         self.executor_thread.sig_finish_one.connect(self.slot_append_progress)
         self.executor_thread.sig_all_down.connect(lambda: self.progress.setMaximum(0))
+        self.executor_thread.sig_all_down.connect(self.mark_finish_executor)
         self.executor_thread.sig_log.connect(self.append_info)
         self.executor_thread.start()
