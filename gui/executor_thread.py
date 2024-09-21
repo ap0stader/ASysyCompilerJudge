@@ -3,6 +3,7 @@ import shutil
 from typing import Tuple
 from pathlib import Path
 from subprocess import call, TimeoutExpired
+from json import dumps
 
 from PyQt6.QtCore import pyqtSignal, QThread
 
@@ -24,8 +25,11 @@ class ExecutorThread(QThread):
         self.result_root = Path("results") / time.strftime("%Y%m%d_%H%M%S", time.localtime())
         self.tests = list(map(lambda p: p.relative_to(self.testcase_root), tests))
 
-        self.config_source = Configure.get_config()["stage"][Configure.get_var("mode")]["compiler_output_file"]
+        self.config_output = Configure.get_config()["stage"][Configure.get_var("mode")]["compiler_output_file"]
         self.config_answer = Configure.get_config()["stage"][Configure.get_var("mode")]["answer_filename"]
+
+        # 'Part' is WA, in that this will not appear
+        self.stat = {"AC": 0, "TLE": 0, "WA": 0, "RE": 0, "Mode": Configure.get_var("mode")}
 
     def run(self) -> None:
         self.result_root.mkdir(parents=True)
@@ -35,13 +39,23 @@ class ExecutorThread(QThread):
                 status, info = self.executor_java(test)  # TODO: Support more langs
             except Exception as e:
                 self.sig_log.emit("遭遇了错误: " + W.code(repr(e)), "crit")
-            if status == StatusCode.EXECUTE_RE:
-                self.sig_log.emit(f"RE> {info}", "warn")
-            elif status == StatusCode.EXECUTE_TLE:
-                self.sig_log.emit(f"TLE> {info}", "warn")
-            elif status != StatusCode.JUDGE_AC:
-                self.sig_log.emit(f"WA> {info}", "warn")
+            else:
+                if status == StatusCode.EXECUTE_RE:
+                    self.sig_log.emit(f"RE> {info}", "warn")
+                    self.stat["RE"] += 1
+                elif status == StatusCode.EXECUTE_TLE:
+                    self.sig_log.emit(f"TLE> {info}", "warn")
+                    self.stat["TLE"] += 1
+                elif status != StatusCode.JUDGE_AC:
+                    self.sig_log.emit(f"WA> {info}", "warn")
+                    self.stat["WA"] += 1
+                else:
+                    self.stat["AC"] += 1
             self.sig_finish_one.emit()
+        self.sig_log.emit("== <b>AC</b>: " + str(self.stat["AC"]) + " <b>WA</b>: " + str(self.stat["WA"]) +
+                          " <b>TLE</b>: " + str(self.stat["TLE"]) + " <b>RE</b>: " + str(self.stat["RE"]) +
+                          " ==", "info")
+        (self.result_root / "summary.txt").write_text(dumps(self.stat, ensure_ascii=True))
         self.sig_all_down.emit()
 
     def executor_java(self, test: Path) -> Tuple[StatusCode, str, str]:
@@ -83,10 +97,15 @@ class ExecutorThread(QThread):
                 )
 
             s, d = LineCompare(str(test)).judge(
-                runtime_dir / self.config_source,
+                runtime_dir / self.config_output,
                 None,
                 runtime_dir / self.config_answer,
             )
+            (result_dir / "info.txt").write_text(s.name + "\n" + d["info"], **encoding_args)
+
+            shutil.copy(str(runtime_dir / self.config_output), str(result_dir / self.config_output))
+            shutil.copy(str(runtime_dir / self.config_answer), str(result_dir / self.config_answer))
+
             return s, d["info"].replace("<", "&lt;").replace("\n", " ")
 
         except TimeoutExpired:
