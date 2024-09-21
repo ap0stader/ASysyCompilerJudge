@@ -28,7 +28,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 评测功能：
 
 - [x] JAR文件自动拉取评测（已完成）(@Ap0stader)
-- [ ] GUI（开发中）(@swkfk)
+- [x] GUI（已完成）(@swkfk)
 - [x] 自定义评测（已完成）(@Ap0stader)
 - [x] MARS执行周期统计（已完成）(@swkfk)
 - [ ] VSCode打开与比较文件指令
@@ -113,6 +113,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
        // Linux/macOS示例："jar_path": "/Users/ap0stader/Compiler/artifacts/Compiler.jar"
        // Windows示例："jar_path": "D:\\Compiler\\artifacts\\Compiler.jar"
        // Windows注意反斜杠需要转义！
+       // 测评机可能不能跨 WSL 与本机进行文件的检测。如果你在 WSL 中运行测评机，请将 Jar 生成路径也改到 WSL 中，反之亦然。
      }
    }
    ```
@@ -139,7 +140,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    └── syntax_analysis
    ```
    
-6. 启动测评机，选择需要评测的阶段，**确认启动测评机**。启动测评机后，将自动进行第一次测评。
+6. （终端交互版本）启动测评机，选择需要评测的阶段，**确认启动测评机**。启动测评机后，将自动进行第一次测评。
 
    ```shell
    $ python main.py
@@ -188,3 +189,12 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    │   └── ...
    └── summary.txt
    ```
+
+
+### GUI 版本提供的功能与兼容性
+
+GUI 提供了**基础的测评功能**，并提供**数据点浏览**、**测评记录浏览**等附加功能。对于额外功能，比如自定义 Judger，还请使用终端版本。
+
+升级到 GUI 版本无需重新执行 `init.py`，新版本完全兼任原有的配置，并能够识别原有的测评记录（`results`）。
+
+后续将会随着测评核心，升级对 C++ 以及后续作业的支持。

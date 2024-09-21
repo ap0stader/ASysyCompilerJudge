@@ -28,6 +28,12 @@ def update_custom_judge():
         print(CYAN + "Ignored." + RESET)
 
 
+def update_gui():
+    print("\n>>>>> Welcome to the GUI version!\n")
+    print(f"You can run `{CYAN}winmain.py{RESET}` to launch the gui version, which supplies a fantasy wrap of the judge kernel")
+    print(f"You can also run `{CYAN}main.py{RESET}` to use full as well as customed functions")
+
+
 # 读取版本文件
 version_path = Path("./VERSION")
 if not version_path.is_file():
@@ -40,7 +46,7 @@ if not version_path.is_file():
 
 def write_version():
     with open("./VERSION", "w", encoding='utf-8') as f:
-        f.write("1.1")
+        f.write("2.0")
 
 
 with open(version_path, "r", encoding='utf-8') as f:
@@ -48,8 +54,12 @@ with open(version_path, "r", encoding='utf-8') as f:
     match version:
         case "1.0":
             update_custom_judge()
+            update_gui()
             write_version()
         case "1.1":
+            update_gui()
+            write_version()
+        case "2.0":
             pass
         case _:
             print("Illegal version!", file=sys.stderr)
