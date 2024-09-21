@@ -266,10 +266,15 @@ class MainWidget(QMainWindow):
             self.disp_modify_time.setText("N/A")
         if init:
             self.disp_watchdog.setText("就绪")
+            self.progress.setMaximum(1)
+            self.progress.setValue(0)
         elif started:
             self.disp_watchdog.setText("监控中 ...")
+            self.progress.setMaximum(0)
         else:
             self.disp_watchdog.setText("就绪")
+            self.progress.setMaximum(1)
+            self.progress.setValue(0)
 
     def mark_start_executor(self):
         self.btn_settings.setDisabled(True)
@@ -280,6 +285,8 @@ class MainWidget(QMainWindow):
         self.btn_settings.setDisabled(False)
         self.btn_force_test.setDisabled(False)
         self.btn_switch.setDisabled(False)
+        if self.btn_switch.text() == "停止监测":
+            self.progress.setMaximum(0)
 
     def launch_executor(self):
         self.mark_start_executor()
@@ -292,7 +299,7 @@ class MainWidget(QMainWindow):
 
         self.executor_thread = ExecutorThread(self, tests)
         self.executor_thread.sig_finish_one.connect(self.slot_append_progress)
-        self.executor_thread.sig_all_down.connect(lambda: self.progress.setMaximum(0))
+        # self.executor_thread.sig_all_down.connect(lambda: self.progress.setMaximum(0))
         self.executor_thread.sig_all_down.connect(self.mark_finish_executor)
         self.executor_thread.sig_log.connect(self.append_info)
         self.executor_thread.start()
