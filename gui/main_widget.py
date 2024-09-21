@@ -18,6 +18,7 @@ from gui.helper import Configure, Testcase, FileModifyHandler
 
 from gui.setting_dialog import SettingDialog
 from gui.test_view_dialog import TestViewDialog
+from gui.executor_thread import ExecutorThread
 
 
 class MainWidget(QMainWindow):
@@ -121,7 +122,7 @@ class MainWidget(QMainWindow):
         self.btn_settings.clicked.connect(self.slot_setting)
         self.btn_switch.clicked.connect(self.slot_toggle_watch)
         self.btn_history.clicked.connect(lambda: self.unimplemented("history"))
-        self.btn_force_test.clicked.connect(lambda: self.unimplemented("force-test"))
+        self.btn_force_test.clicked.connect(self.launch_executor)
 
         self.radio_lexer.toggled.connect(self.build_slot_hw_picked("lexical_analysis"))
         self.radio_syntax.toggled.connect(self.build_slot_hw_picked("syntax_analysis"))
@@ -131,6 +132,7 @@ class MainWidget(QMainWindow):
 
         self.observer = None
         self.handler = None
+        self.executor_thread = None
 
         self.startup()
 
@@ -152,6 +154,7 @@ class MainWidget(QMainWindow):
     def slot_file_modified(self):
         self.update_watchdog(False, True)
         self.append_info("检测到文件变动: " + W.code(self.handler.target_path.name))
+        self.launch_executor()
 
     def slot_toggle_watch(self):
         if self.btn_switch.text() == "启动测评":
@@ -172,6 +175,9 @@ class MainWidget(QMainWindow):
             self.append_info("Watchdog 停止检测")
         else:
             raise RuntimeError("测评状态错误")
+    
+    def slot_append_progress(self):
+        self.progress.setValue(self.progress.value() + 1)
     # endregion
 
     # region build slot functions
@@ -259,3 +265,10 @@ class MainWidget(QMainWindow):
             self.disp_watchdog.setText("监控中 ...")
         else:
             self.disp_watchdog.setText("就绪")
+
+    def launch_executor(self):
+        self.append_info("启动测试 ...")
+        self.progress.setValue(0)
+        self.executor_thread = ExecutorThread(self)
+        self.executor_thread.sig_finish_one.connect(self.slot_append_progress)
+        self.executor_thread.start()
