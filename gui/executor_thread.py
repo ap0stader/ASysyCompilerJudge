@@ -32,6 +32,21 @@ class ExecutorThread(QThread):
         self.stat = {"AC": 0, "TLE": 0, "WA": 0, "RE": 0, "Mode": Configure.get_var("mode")}
 
     def run(self) -> None:
+        """
+            It is observed that, if a sub-thread encounter an exception in Linux, the Python
+            executable itself will emit a `SIGSEGV` which cannot be caught by the global exception
+            hook. So I use this way to protect the main thread and the main window. The sub-thread
+            will end smoothly even an exception is raised.
+        """
+        try:
+            self.protected_run()
+        except Exception as e:
+            # It is required that the following codes cannot throw an exception. Otherwise the whole
+            # program will break down immediately.
+            self.sig_log.emit("子线程遭遇了不可恢复的异常: " + W.code(repr(e)), "crit")
+            self.sig_all_down.emit()
+
+    def protected_run(self) -> None:
         self.result_root.mkdir(parents=True)
         for test in self.tests:
             self.sig_log.emit("进行测试: " + W.code(str(test)), "info")
