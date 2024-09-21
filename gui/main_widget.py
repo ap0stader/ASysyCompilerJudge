@@ -1,15 +1,20 @@
 from typing import Literal
 from json import JSONDecodeError
+from time import ctime
+from pathlib import Path
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (QMainWindow, QGridLayout, QWidget, QPushButton, QLabel, QLineEdit,
                              QButtonGroup, QRadioButton, QGroupBox, QVBoxLayout, QProgressBar,
                              QTextEdit)
 
+# Why I do not use the QFileSystemWatcher? It is said that, when the target file is deleted,
+# the QFileSystemWatcher cannot work smoothly.
+from watchdog.observers import Observer
 
 from gui.helper import get_version
 from gui.helper import StringWrapper as W
-from gui.helper import Configure, Testcase
+from gui.helper import Configure, Testcase, FileModifyHandler
 
 from gui.setting_dialog import SettingDialog
 from gui.test_view_dialog import TestViewDialog
@@ -19,7 +24,7 @@ class MainWidget(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
 
-        self.resize(600, 400)
+        self.resize(700, 400)
         self.setWindowTitle("A Sysy-Compiler Judge  V" + get_version())
 
         # region main layout
@@ -114,7 +119,7 @@ class MainWidget(QMainWindow):
 
         # region signal & slot
         self.btn_settings.clicked.connect(self.slot_setting)
-        self.btn_switch.clicked.connect(lambda: self.unimplemented("switch"))
+        self.btn_switch.clicked.connect(self.slot_toggle_watch)
         self.btn_history.clicked.connect(lambda: self.unimplemented("history"))
         self.btn_force_test.clicked.connect(lambda: self.unimplemented("force-test"))
 
@@ -123,6 +128,9 @@ class MainWidget(QMainWindow):
         # TODO: Support more
         self.btn_view_tests.clicked.connect(self.slot_view_tests)
         # endregion
+
+        self.observer = None
+        self.handler = None
 
         self.startup()
 
@@ -140,6 +148,30 @@ class MainWidget(QMainWindow):
             self, Configure.get_config()["stage"][Configure.get_var("mode")],
             Testcase.get_list(Configure.get_config()["stage"][Configure.get_var("mode")]["testfile_path"])
         ).exec()
+
+    def slot_file_modified(self):
+        self.update_watchdog(False, True)
+        self.append_info("检测到文件变动: " + W.code(self.handler.target_path.name))
+
+    def slot_toggle_watch(self):
+        if self.btn_switch.text() == "启动测评":
+            self.btn_switch.setText("停止测评")
+            # Stupid thread.stop!
+            self.observer = Observer()
+            self.observer.schedule(
+                self.handler,
+                str(Path(Configure.get_config()["lang"]["java"]["jar_path"]).parent),
+            )
+            self.observer.start()
+            self.update_watchdog(False, True)
+            self.append_info("Watchdog 线程启动")
+        elif self.btn_switch.text() == "停止测评":
+            self.btn_switch.setText("启动测评")
+            self.observer.stop()
+            self.update_watchdog(False, False)
+            self.append_info("Watchdog 停止检测")
+        else:
+            raise RuntimeError("测评状态错误")
     # endregion
 
     # region build slot functions
@@ -163,6 +195,7 @@ class MainWidget(QMainWindow):
         self.text_info.append(f"<span {style[type]}><code>{type}> </code>{line}</span>")
 
     def startup(self):
+        # region startup: config
         if not Configure.file_exist():
             self.append_info("配置文件残缺", "crit")
             self.append_info("请首先执行 " + W.code("init.py") + " 或参照 " + W.code("config_example/") + " 进行修复")
@@ -184,8 +217,25 @@ class MainWidget(QMainWindow):
             self.disable_everything()
             self.btn_settings.setDisabled(False)  # Allow user to modify the setting
             return
+        # endregion
+
         self.recover_everything()
         self.radio_lexer.setChecked(True)  # TODO: Store the last choise
+
+        # region startup: watchdog
+        if self.handler is not None:
+            self.handler.sig_modified.disconnect()
+
+        try: self.observer.stop()
+        except: pass
+
+        self.btn_switch.setText("启动测评")
+
+        self.handler = FileModifyHandler(self, Configure.get_config()["lang"]["java"]["jar_path"])
+        self.handler.sig_modified.connect(self.slot_file_modified)
+
+        self.update_watchdog(True)
+        #endregion
 
     def disable_everything(self):
         self.append_info("禁用全局交互 ...", "warn")
@@ -195,3 +245,17 @@ class MainWidget(QMainWindow):
     def recover_everything(self):
         for child in (child for child in self.widget.children() if isinstance(child, QWidget)):
             child.setDisabled(False)
+
+    def update_watchdog(self, init: bool, started: bool = False):
+        path = Path(Configure.get_config()["lang"]["java"]["jar_path"])
+        self.disp_target_file.setText(str(path))  # TODO: Support more langs
+        try:
+            self.disp_modify_time.setText(ctime(path.stat().st_mtime))
+        except:
+            self.disp_modify_time.setText("N/A")
+        if init:
+            self.disp_watchdog.setText("就绪")
+        elif started:
+            self.disp_watchdog.setText("监控中 ...")
+        else:
+            self.disp_watchdog.setText("就绪")
