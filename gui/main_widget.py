@@ -9,9 +9,10 @@ from PyQt6.QtWidgets import (QMainWindow, QGridLayout, QWidget, QPushButton, QLa
 
 from gui.helper import get_version
 from gui.helper import StringWrapper as W
-from gui.helper import Configure
+from gui.helper import Configure, Testcase
 
 from gui.setting_dialog import SettingDialog
+from gui.test_view_dialog import TestViewDialog
 
 
 class MainWidget(QMainWindow):
@@ -49,7 +50,6 @@ class MainWidget(QMainWindow):
         self.radio_lexer = QRadioButton("词法分析", self.group_hw)
         self.btn_group_hw.addButton(self.radio_lexer)
         self.group_hw_layout.addWidget(self.radio_lexer)
-        self.radio_lexer.setChecked(True)  # TODO: Store the last choise
 
         self.radio_syntax = QRadioButton("语法分析", self.group_hw)
         self.btn_group_hw.addButton(self.radio_syntax)
@@ -66,6 +66,8 @@ class MainWidget(QMainWindow):
         self.radio_codegen.setDisabled(True)  # TODO: Support it
 
         # TODO: Different code gen
+        self.btn_view_tests = QPushButton("浏览测试点", self.group_hw)
+        self.group_hw_layout.addWidget(self.btn_view_tests)
         # endregion
 
         # region dashboard header
@@ -115,16 +117,39 @@ class MainWidget(QMainWindow):
         self.btn_switch.clicked.connect(lambda: self.unimplemented("switch"))
         self.btn_history.clicked.connect(lambda: self.unimplemented("history"))
         self.btn_force_test.clicked.connect(lambda: self.unimplemented("force-test"))
+
+        self.radio_lexer.toggled.connect(self.build_slot_hw_picked("lexical_analysis"))
+        self.radio_syntax.toggled.connect(self.build_slot_hw_picked("syntax_analysis"))
+        # TODO: Support more
+        self.btn_view_tests.clicked.connect(self.slot_view_tests)
         # endregion
 
         self.startup()
 
+    # region slot functions
     def slot_setting(self):
         self.append_info("Open Settings ...")
         SettingDialog(self).exec()
         self.append_info("Re-read settings ...")
         Configure.reset()
         self.startup()
+
+    def slot_view_tests(self):
+        self.append_info("浏览测试点: " + W.code(Configure.get_var("mode")) + " ...")
+        TestViewDialog(
+            self, Configure.get_config()["stage"][Configure.get_var("mode")],
+            Testcase.get_list(Configure.get_config()["stage"][Configure.get_var("mode")]["testfile_path"])
+        ).exec()
+    # endregion
+
+    # region build slot functions
+    def build_slot_hw_picked(self, mode):
+        def inner(picked: bool):
+            if picked:
+                Configure.set_var("mode", mode)
+                self.append_info("选择模式: " + W.code(mode))
+        return inner
+    # endregion
 
     def unimplemented(self, of: str = ""):
         self.append_info("Unimplemented" + (f": {W.code(of)}" if of else ""), "warn")
@@ -160,6 +185,7 @@ class MainWidget(QMainWindow):
             self.btn_settings.setDisabled(False)  # Allow user to modify the setting
             return
         self.recover_everything()
+        self.radio_lexer.setChecked(True)  # TODO: Store the last choise
 
     def disable_everything(self):
         self.append_info("禁用全局交互 ...", "warn")

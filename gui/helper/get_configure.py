@@ -11,6 +11,8 @@ __Configure_Example_Path = Path("config_example")
 
 __config = None
 __files = ["lang", "command", "stage"]
+__kv = {}
+
 
 def file_exist() -> bool:
     return __Configure_Path.is_dir() and all(
@@ -97,3 +99,11 @@ def write_config_file(name: str, content: str):
 def reset():
     global __config
     __config = None
+
+
+def set_var(k, v):
+    __kv[k] = v
+
+
+def get_var(k, default=None):
+    return __kv.get(k, default)
