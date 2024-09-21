@@ -267,8 +267,15 @@ class MainWidget(QMainWindow):
             self.disp_watchdog.setText("就绪")
 
     def launch_executor(self):
-        self.append_info("启动测试 ...")
+        case_count = len(
+            tests := Testcase.get_list(Configure.get_config()["stage"][Configure.get_var("mode")]["testfile_path"])
+        )
+        self.append_info(f"启动测试 > 测试点数目: {case_count}")
         self.progress.setValue(0)
-        self.executor_thread = ExecutorThread(self)
+        self.progress.setMaximum(case_count)
+
+        self.executor_thread = ExecutorThread(self, tests)
         self.executor_thread.sig_finish_one.connect(self.slot_append_progress)
+        self.executor_thread.sig_all_down.connect(lambda: self.progress.setMaximum(0))
+        self.executor_thread.sig_log.connect(self.append_info)
         self.executor_thread.start()

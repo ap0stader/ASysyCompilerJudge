@@ -10,3 +10,4 @@ from gui.helper.wrapper import StringWrapper
 from gui.helper.observer import FileModifyHandler
 import gui.helper.obtain_testcase as Testcase
 import gui.helper.get_configure as Configure
+import gui.helper.tempfile_handler as TempFile
