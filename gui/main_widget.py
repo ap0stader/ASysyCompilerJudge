@@ -18,6 +18,7 @@ from gui.helper import Configure, Testcase, FileModifyHandler
 
 from gui.setting_dialog import SettingDialog
 from gui.test_view_dialog import TestViewDialog
+from gui.history_dialog import HistoryDialog
 from gui.executor_thread import ExecutorThread
 
 
@@ -121,7 +122,7 @@ class MainWidget(QMainWindow):
         # region signal & slot
         self.btn_settings.clicked.connect(self.slot_setting)
         self.btn_switch.clicked.connect(self.slot_toggle_watch)
-        self.btn_history.clicked.connect(lambda: self.unimplemented("history"))
+        self.btn_history.clicked.connect(self.slot_view_history)
         self.btn_force_test.clicked.connect(self.launch_executor)
 
         self.radio_lexer.toggled.connect(self.build_slot_hw_picked("lexical_analysis"))
@@ -150,6 +151,10 @@ class MainWidget(QMainWindow):
             self, Configure.get_config()["stage"][Configure.get_var("mode")],
             Testcase.get_list(Configure.get_config()["stage"][Configure.get_var("mode")]["testfile_path"])
         ).exec()
+
+    def slot_view_history(self):
+        self.append_info("查询测评记录 ...")
+        HistoryDialog(self).exec()
 
     def slot_file_modified(self):
         self.update_watchdog(False, True)
