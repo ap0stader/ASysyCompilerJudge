@@ -1,5 +1,5 @@
 # 更新工作环境
-__CURRENT_VERSION = "1.1"
+__CURRENT_VERSION = "1.2"
 
 import os
 

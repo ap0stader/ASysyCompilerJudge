@@ -36,7 +36,7 @@ def get_config():
                   f"`{CYAN}{openpath}{YELLOW}` Use example file instead.{RESET}")
             openpath = (__EXAMPLE_PATH / filename)
         try:
-            config[key] = json.loads(openpath.read_text())
+            config[key] = json.loads(openpath.read_text(encoding="utf-8"))
         except FileNotFoundError:
             print(f">>> {RED}Error: Cannot find the json file " +
                   f"`{CYAN}{openpath}{RED}`.{RESET}")

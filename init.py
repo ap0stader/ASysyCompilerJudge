@@ -1,4 +1,6 @@
 # 初始化工作环境
+__CURRENT_VERSION = "1.2"
+
 import os
 
 print("=======   ASysyCompilerJudge Initialization   =======")
@@ -67,7 +69,7 @@ if sure == "Y" or sure == "y":
     print(GREEN + str(config_example) + " folder copied." + RESET)
     # 写入VERSION文件
     with open("./VERSION", "w", encoding='utf-8') as f:
-        f.write("1.1")
+        f.write(__CURRENT_VERSION)
 
     print(GREEN + "=======           Initialization End          =======" + RESET)
     print(ITALIC + "Please configure the judge.\n"
