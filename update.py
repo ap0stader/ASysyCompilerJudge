@@ -1,4 +1,6 @@
 # 更新工作环境
+__CURRENT_VERSION = "1.2"
+
 import os
 
 print("=======   ASysyCompilerJudge Update   =======")
@@ -18,7 +20,7 @@ from util.termcolor import RESET, RED, GREEN, CYAN
 # 升级custom_judge.py
 def update_custom_judge():
     print(">>>>> Update custom_judge.py")
-    custom_judge_input = input("A new version of custom_judge.py is prepared. Do you want to continue? [Y/N] ")
+    custom_judge_input = input("A new version of custom_judge.py is prepared. Do you want to replace? [Y/N] ")
     if custom_judge_input.upper() == "Y":
         custom_judge_example_path = Path("./config_example/custom_judge.py")
         custom_judge_path = Path("./config/custom_judge.py")
@@ -37,16 +39,18 @@ def update_gui():
 # 读取版本文件
 version_path = Path("./VERSION")
 if not version_path.is_file():
-    print(RED + "VERSION file not found!"
+    print(RED + "VERSION file not found!\n"
                 "This program is only for update.\n"
                 "If you have not initialize the environment,\n"
                 "please run init.py instead." + RESET)
     exit(1)
 
+with open(version_path, "r", encoding='utf-8') as version_file:
+    version = version_file.read().strip()
 
 def write_version():
     with open("./VERSION", "w", encoding='utf-8') as f:
-        f.write("2.0")
+        f.write(__CURRENT_VERSION)
 
 
 with open(version_path, "r", encoding='utf-8') as f:
@@ -56,7 +60,7 @@ with open(version_path, "r", encoding='utf-8') as f:
             update_custom_judge()
             update_gui()
             write_version()
-        case "1.1":
+        case "1.1" | "1.2":
             update_gui()
             write_version()
         case "2.0":

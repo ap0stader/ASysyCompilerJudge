@@ -45,13 +45,13 @@ class StatByFile(Analyzer):
         for origin, stat in self.__data.items():
             print("Judge: " + origin)
 
-            print(CYAN + "ALL: " + RESET + f"{stat['ALL']:<5}", end="")
-            print(GREEN + "AC: " + RESET + f"{stat['AC']:<5}", end="")
+            print(CYAN + "ALL: " + RESET + f"{stat['ALL']:<5}", end=" ")
+            print(GREEN + "AC: " + RESET + f"{stat['AC']:<5}", end=" ")
             if stat["PART"] != 0:
-                print(YELLOW + "PART: " + RESET + f"{stat['PART']:<5}", end="")
-            print(RED + "WA: " + RESET + f"{stat['WA']:<5}", end="")
-            print(BLUE + "TLE: " + RESET + f"{stat['TLE']:<5}", end="")
-            print(MAGENTA + "RE: " + RESET + f"{stat['RE']:<5}", end="")
+                print(YELLOW + "PART: " + RESET + f"{stat['PART']:<5}", end=" ")
+            print(RED + "WA: " + RESET + f"{stat['WA']:<5}", end=" ")
+            print(BLUE + "TLE: " + RESET + f"{stat['TLE']:<5}", end=" ")
+            print(MAGENTA + "RE: " + RESET + f"{stat['RE']:<5}", end=" ")
             if stat["UNKNOWN"] != 0:
                 print("UNKNOWN: " + f"{stat['UNKNOWN']:<5}", flush=True)
             else:
@@ -62,13 +62,13 @@ class StatByFile(Analyzer):
         for origin, stat in self.__data.items():
             strbuilder += "Judge: " + origin + "\n"
 
-            strbuilder += "ALL: " + f"{stat['ALL']:<5}"
-            strbuilder += "AC: " + f"{stat['AC']:<5}"
+            strbuilder += "ALL: " + f"{stat['ALL']:<5} "
+            strbuilder += "AC: " + f"{stat['AC']:<5} "
             if stat["PART"] != 0:
-                strbuilder += "PART: " + f"{stat['PART']:<5}"
-            strbuilder += "WA: " + f"{stat['WA']:<5}"
-            strbuilder += "TLE: " + f"{stat['TLE']:<5}"
-            strbuilder += "RE: " + f"{stat['RE']:<5}"
+                strbuilder += "PART: " + f"{stat['PART']:<5} "
+            strbuilder += "WA: " + f"{stat['WA']:<5} "
+            strbuilder += "TLE: " + f"{stat['TLE']:<5} "
+            strbuilder += "RE: " + f"{stat['RE']:<5} "
             if stat["UNKNOWN"] != 0:
                 strbuilder += "UNKNOWN: " + f"{stat['UNKNOWN']:<5}"
         return strbuilder + "\n"
