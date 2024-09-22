@@ -28,9 +28,9 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 评测功能：
 
 - [x] JAR文件自动拉取评测（已完成）(@ap0stader)
-- [ ] GUI（开发中）(@swkfk)
-- [x] 自定义评测（已完成）(@ap0stader)
-- [x] MARS执行周期统计（已完成）(@swkfk)
+- [x] GUI（已完成开发，待上线）(@swkfk)
+- [x] 自定义评测（已完成开发，待上线）(@ap0stader)
+- [x] MARS执行周期统计（已完成开发，待上线）(@swkfk)
 - [ ] VSCode打开与比较文件指令
 - [ ] 测试文件持续监控评测
 
@@ -107,15 +107,16 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    └── stage.json
    ```
 
-4. 配置lang.json，该文件包括开发语言信息。`"programming language"`中配置开发语言，目前测评机支持Java(`"java"`)。若开发语言为Java，需要在`"java"`中的`"jar_path"`配置生成的编译程序的JAR文件的**绝对路径**，建议填写IDEA等开发工具生成JAR的路径，这样后续有新版本JAR生成了，测评机可以**自动监测到并且拉起评测**。**注意：请先生成JAR之后再配置，测评机启动时会检测JAR文件是否存在**
+4. 配置lang.json，该文件包括开发语言信息。`"programming language"`中配置开发语言，目前测评机支持Java(`"java"`)。若开发语言为Java，需要在`"java"`中的`"jar_path"`配置生成的编译程序的JAR文件的**绝对路径**（路径支持包含中文字符），建议填写IDEA等开发工具生成JAR的路径，这样后续有新版本JAR生成了，测评机可以**自动监测到并且拉起评测**。**注意：配置文件请保存为UTF-8编码，否则可能导致解析或运行时的编码错误。请先生成JAR之后再配置，测评机启动时会检测JAR文件是否存在。**
 
    ```javascript
    {
      "programming language": "java", // Java -> java
      "java": {
        "jar_path": "PATH_TO_JAR"
-       // Linux/macOS示例："jar_path": "/Users/ap0stader/Compiler/artifacts/Compiler.jar"
-       // Windows示例："jar_path": "D:\\Compiler\\artifacts\\Compiler.jar"
+       // 路径支持包含中文字符
+       // Linux/macOS示例："jar_path": "/Users/ap0stader/编译/artifacts/Compiler.jar"
+       // Windows示例："jar_path": "D:\\编译器\\artifacts\\Compiler.jar"
        // Windows注意反斜杠需要转义！
      }
    }
