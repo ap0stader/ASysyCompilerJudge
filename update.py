@@ -1,5 +1,5 @@
 # 更新工作环境
-__CURRENT_VERSION = "1.2"
+__CURRENT_VERSION = "1.3"
 
 import os
 
@@ -10,25 +10,10 @@ print(">>>>> Update dependencies")
 if os.system("pip install -r requirements.txt"):
     exit(1)
 
-import shutil
 import sys
 from pathlib import Path
 
-from util.termcolor import RESET, RED, GREEN, CYAN
-
-
-# 升级custom_judge.py
-def update_custom_judge():
-    print(">>>>> Update custom_judge.py")
-    custom_judge_input = input("A new version of custom_judge.py is prepared. Do you want to replace? [Y/N] ")
-    if custom_judge_input.upper() == "Y":
-        custom_judge_example_path = Path("./config_example/custom_judge.py")
-        custom_judge_path = Path("./config/custom_judge.py")
-        shutil.copy(custom_judge_example_path, custom_judge_path)
-        print(GREEN + "New custom_judge.py copied." + RESET)
-    else:
-        print(CYAN + "Ignored." + RESET)
-
+from util.termcolor import RESET, RED, GREEN
 
 # 读取版本文件
 version_path = Path("./VERSION")
@@ -44,11 +29,16 @@ with open(version_path, "r", encoding='utf-8') as version_file:
 
 match version:
     case "1.0":
-        update_custom_judge()
+        print("Your version is 1.0, which is too old. Please backup your data and run init.py!", file=sys.stderr)
+        exit(1)
     case "1.1":
         pass
+    case "1.2":
+        pass
+    case "1.3":
+        print("You are up-to-date.")
     case _:
-        print("Illegal version!", file=sys.stderr)
+        print("Illegal version! Please backup your data and run init.py!", file=sys.stderr)
         exit(1)
 
 with open("./VERSION", "w", encoding='utf-8') as version_file:

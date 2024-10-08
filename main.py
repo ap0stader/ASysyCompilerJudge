@@ -12,6 +12,7 @@ if __name__ == '__main__':
 
     print("[1] Lexical Analysis\n"
           "[2] Syntax Analysis\n"
+          "[3] Semantic Analysis\n"
           "[C] Custom")
     stage_input = input("Please select the stage of your project [1-2 or C] ")
     match stage_input:
@@ -21,6 +22,9 @@ if __name__ == '__main__':
         case "2":
             # 语法分析
             mode = "syntax_analysis"
+        case "3":
+            # 语义分析
+            mode = "semantic_analysis"
         # TODO 增加其他的阶段
         case "C":
             # 自定义评测

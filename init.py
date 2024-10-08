@@ -1,5 +1,5 @@
 # 初始化工作环境
-__CURRENT_VERSION = "1.2"
+__CURRENT_VERSION = "1.3"
 
 import os
 

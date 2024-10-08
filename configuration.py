@@ -55,11 +55,13 @@ def get_executor_config(mode: str) -> Tuple[Dict[str, Any], List[ExecutorObserve
     if mode == "custom":
         import config.custom_judge as custom
         return custom.get()
-    elif mode == "lexical_analysis" or mode == "syntax_analysis":
+    elif mode == "lexical_analysis" or mode == "syntax_analysis" or mode == "semantic_analysis":
         if mode == "lexical_analysis":
             name = "Lexical Analysis"
         elif mode == "syntax_analysis":
             name = "Syntax Analysis"
+        elif mode == "semantic_analysis":
+            name = "Semantic Analysis"
         else:
             name = "UNKNOWN ERROR"
         return {
