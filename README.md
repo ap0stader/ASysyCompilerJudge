@@ -21,7 +21,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 
 - [x] 词法分析（已完成）(@ap0stader)
 - [x] 语法分析（已完成）(@ap0stader)
-- [ ] 语义分析（待开发）(@ap0stader)
+- [x] 语义分析（已完成）(@ap0stader)
 - [x] 代码生成(LLVM)（已完成开发，待上线）(@swkfk)
 - [ ] 代码生成(MIPS)（开发中）(@swkfk)
 
@@ -53,9 +53,6 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    $ python update.py
    =======   ASysyCompilerJudge Update   =======
    >>>>>  Update dependencies
-   ......
-   >>>>> Update custom_judge.py
-   A new version of custom_judge.py is prepared. Do you want to replace? [Y/N] 
    ......
    ```
 
