@@ -22,15 +22,15 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 - [x] 词法分析（已完成）(@ap0stader)
 - [x] 语法分析（已完成）(@ap0stader)
 - [x] 语义分析（已完成）(@ap0stader)
-- [x] 代码生成(LLVM)（已完成开发，待上线）(@swkfk)
+- [ ] 代码生成(LLVM)（完善中）(@swkfk+@ap0stader)
 - [ ] 代码生成(MIPS)（开发中）(@swkfk)
 
 评测功能：
 
 - [x] JAR文件自动拉取评测（已完成）(@ap0stader)
-- [x] GUI（已完成开发，待上线）(@swkfk)
-- [x] 自定义评测（已完成开发，待上线）(@ap0stader)
-- [x] MARS执行周期统计（已完成开发，待上线）(@swkfk)
+- [x] GUI（已完成开发，待正式上线）(@swkfk)
+- [x] 自定义评测（已完成开发，待正式上线）(@ap0stader)
+- [x] MARS执行周期统计（已完成开发，待正式上线）(@swkfk)
 - [ ] VSCode打开与比较文件指令
 - [ ] 测试文件持续监控评测
 
@@ -40,7 +40,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
 
 1. 本项目仍在快速迭代中，稳定的分支为**main分支**，
 
-2. 更新时，请先拉取，然后运行**update.py**。
+2. 更新时，请先拉取，然后运行**update.py**。若直接运行main.py将会收到报错。
 
    ```shell
    $ git pull
@@ -148,6 +148,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    >>> Parsing configurations...
    [1] Lexical Analysis
    [2] Syntax Analysis
+   [3] Semantic Analysis
    [C] Custom
    Please select the stage_input of your project [1-2 or C] 1
    >>> Executor is ready!
