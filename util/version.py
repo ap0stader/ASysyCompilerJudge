@@ -1,6 +1,5 @@
+import sys
 from pathlib import Path
-
-from util.termcolor import RESET, RED
 
 # 当前版本
 CURRENT_VERSION = "1.3"
@@ -10,9 +9,9 @@ CURRENT_VERSION = "1.3"
 def get_version() -> str:
     version_path = Path("./VERSION")
     if not version_path.is_file():
-        print(RED + "VERSION file not found!\n"
-                    "If you have not initialize the environment,\n"
-                    "please run init.py first." + RESET)
+        print("VERSION file not found!\n"
+              "If you have not initialize the environment,\n"
+              "please run init.py first.", file=sys.stderr)
         exit(1)
     with open(version_path, "r", encoding='utf-8') as version_file:
         version = version_file.read().strip()
