@@ -1,6 +1,4 @@
 # 初始化工作环境
-__CURRENT_VERSION = "1.3"
-
 import os
 
 print("=======   ASysyCompilerJudge Initialization   =======")
@@ -13,6 +11,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from util import version
 from util.termcolor import RESET, RED, GREEN, ITALIC
 
 
@@ -68,8 +67,7 @@ if sure == "Y" or sure == "y":
     shutil.copytree(config_example, config)
     print(GREEN + str(config_example) + " folder copied." + RESET)
     # 写入VERSION文件
-    with open("./VERSION", "w", encoding='utf-8') as f:
-        f.write(__CURRENT_VERSION)
+    version.write_version()
 
     print(GREEN + "=======           Initialization End          =======" + RESET)
     print(ITALIC + "Please configure the judge.\n"

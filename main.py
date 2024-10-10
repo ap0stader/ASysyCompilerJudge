@@ -3,9 +3,15 @@ import sys
 import configuration
 
 from executor import Executor
-from util.termcolor import RESET, RED, INVERT
+from util import version
+from util.termcolor import RESET, RED, INVERT, YELLOW
 
 if __name__ == '__main__':
+    if not version.is_latest():
+        print(YELLOW + "You have update the sourcecode but have not update the environment!\n"
+                       "Please run update.py first." + RESET)
+        exit(1)
+
     print(">>> Parsing configurations...")
     # 解析配置文件
     CONFIG = configuration.get_config()
