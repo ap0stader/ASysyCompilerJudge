@@ -8,7 +8,6 @@ if os.system("pip install -r requirements.txt"):
     exit(1)
 
 import shutil
-import sys
 from pathlib import Path
 
 from util import version
@@ -45,8 +44,7 @@ if sure == "Y" or sure == "y":
     print(">>>>> Create results/")
     results = Path("./results")
     if results.is_file():
-        print("Previous " + str(results) + " is a file. Please backup and delete it.", file=sys.stderr)
-        exit(1)
+        raise Exception("Previous " + str(results) + " is a file. Please backup and delete it.")
     # 如果已经有results文件夹，不删除其内容
     results.mkdir(exist_ok=True)
     print(GREEN + str(results) + " folder created." + RESET)
