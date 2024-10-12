@@ -9,6 +9,7 @@ class StatusCode(Enum):
     EXECUTE_UNKNOWN = 199
 
     JUDGE_AC = 200
-    JUDGE_PART = 201
-    JUDGE_WA = 202
+    JUDGE_WA = 201
+    JUDGE_TLE = 202
+    JUDGE_RE = 203
     JUDGE_UNKNOWN = 299
