@@ -25,9 +25,5 @@ class Analyzer(ABC):
         pass
 
     @abstractmethod
-    def summary_print(self):
-        pass
-
-    @abstractmethod
-    def summary_save(self) -> str:
+    def summary(self) -> str:
         pass
