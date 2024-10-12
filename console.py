@@ -2,6 +2,8 @@ from typing import List
 
 from analyzer.common import Analyzer
 from analyzer.statstatus import StatStatus
+from judge.common import Judge
+from util.statuscode import StatusCode
 from util.termcolor import RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, BRIGHT, ITALIC, UNDERLINE, INVERT
 
 
@@ -20,6 +22,47 @@ def executor_start_hook():
 
 def task_start_hook(task_name: str):
     print(">>> Task: " + task_name)
+
+
+def testcase_start_hook(test_index: int, testcase_relative_path: str):
+    print(f"No. {test_index:<4} Testcase: {str(testcase_relative_path):<16}", end=" ", flush=True)
+
+
+def execute_status_hook(test_index: int, testcase_relative_path: str, statuscode: StatusCode):
+    match statuscode:
+        case StatusCode.EXECUTE_TLE:
+            print(BLUE + "TLE" + RESET, flush=True)
+        case StatusCode.EXECUTE_RE:
+            print(MAGENTA + "RE" + RESET, flush=True)
+        case StatusCode.EXECUTE_UNKNOWN:
+            print("UNKNOWN", flush=True)
+
+
+def judge_start_hook(test_index: int, testcase_relative_path: str, judge: Judge):
+    print(f"{judge.name():>20}=>", end="", flush=True)
+
+
+def judge_status_hook(test_index: int, testcase_relative_path: str, judge: Judge,
+                      judge_status: StatusCode, judge_info_object: dict):
+    match judge_status:
+        case StatusCode.JUDGE_AC:
+            print(GREEN + "AC" + RESET, end="")
+            if judge_info_object["info"] != "":
+                print("(" + judge_info_object["info"] + ")", end=" ")
+            else:
+                print("", end=" ")
+        case StatusCode.JUDGE_WA:
+            print(RED + "WA" + RESET, end=" ")
+        case StatusCode.JUDGE_TLE:
+            print(BLUE + "TLE" + RESET, end=" ")
+        case StatusCode.JUDGE_RE:
+            print(MAGENTA + "RE" + RESET, end=" ")
+        case StatusCode.JUDGE_UNKNOWN:
+            print("UNKNOWN", end=" ")
+
+
+def judge_end_hook(test_index: int, testcase_relative_path: str, judge: Judge):
+    print(flush=True)
 
 
 def summary_hook(analyzers: List[Analyzer]):

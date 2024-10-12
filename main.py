@@ -1,4 +1,3 @@
-from console import summary_hook, task_start_hook
 from util import version
 
 # 检查当前是否是最新版本
@@ -71,6 +70,11 @@ if __name__ == '__main__':
     executor_start = partial(executor.start,
                              executor_start_hook=console.executor_start_hook,
                              task_start_hook=console.task_start_hook,
+                             testcase_start_hook=console.testcase_start_hook,
+                             execute_status_hook=console.execute_status_hook,
+                             judge_start_hook=console.judge_start_hook,
+                             judge_status_hook=console.judge_status_hook,
+                             judge_end_hook=console.judge_end_hook,
                              summary_hook=console.summary_hook,
                              executor_finish_hook=console.executor_finish_hook)
     executor.add_observer(lang.get_observer(executor_start))

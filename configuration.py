@@ -78,7 +78,7 @@ def get_executor_config(mode: str) -> Tuple[List[Dict[str, Any]], List[ExecutorO
             "input_filename": None,
             "answer_filename": "ans.txt",
             "judge_dict": {
-                "lexer": [{
+                "parser": [{
                     "compiler_output_filename": "parser.txt",
                     "judge": LineCompare("Syntax Analysis (Parser)"),
                     "analyzers": [public_analyzer]

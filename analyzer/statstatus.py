@@ -51,4 +51,3 @@ class StatStatus(Analyzer):
             if stat["UNKNOWN"] != 0:
                 strbuilder += f"UNKNOWN: {stat['UNKNOWN']:<5}"
         return strbuilder + "\n"
-    
