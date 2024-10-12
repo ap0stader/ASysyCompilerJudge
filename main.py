@@ -1,9 +1,12 @@
+from console import summary_hook, task_start_hook
 from util import version
 
 # 检查当前是否是最新版本
 if not version.is_latest():
     raise Exception("You have update the sourcecode but have not update the environment!\n"
                     "Please run update.py first.")
+
+from functools import partial
 
 import configuration
 import console
@@ -65,8 +68,13 @@ if __name__ == '__main__':
         case _:
             raise KeyError("Programming language " + lang_input + " is not supported")
     print(">>> Creating observer of " + lang.name() + "...")
-    executor.add_observer(lang.get_observer)
+    executor_start = partial(executor.start,
+                             executor_start_hook=console.executor_start_hook,
+                             task_start_hook=console.task_start_hook,
+                             summary_hook=console.summary_hook,
+                             executor_finish_hook=console.executor_finish_hook)
+    executor.add_observer(lang.get_observer(executor_start))
     executor.set_execute(lang.execute)
-    executor.observe()
+    executor.observe(executor_start=executor_start, started_observe_hook=console.started_observe_hook)
 
     print("\nGoodBye~")

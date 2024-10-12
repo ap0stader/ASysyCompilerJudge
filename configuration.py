@@ -47,63 +47,69 @@ def get_executor_config(mode: str) -> Tuple[List[Dict[str, Any]], List[ExecutorO
     elif mode == "lexical_analysis":
         public_analyzer = StatStatus("Lexical Analysis")
         return [{
+            "name": "Lexical Analysis",
             "args": get_config()["stage"][mode]["args"],
             "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+            "config_filename": "config.json",
             "sourcecode_filename": "testfile.txt",
             "input_filename": None,
             "answer_filename": "ans.txt",
-            "judge_configs": {
+            "judge_dict": {
                 "lexer": [{
                     "compiler_output_filename": "lexer.txt",
                     "judge": LineCompare("Lexical Analysis (Lexer)"),
-                    "analyzer": public_analyzer
+                    "analyzers": [public_analyzer]
                 }],
                 "error": [{
                     "compiler_output_filename": "error.txt",
                     "judge": LineCompare("Lexical Analysis (Error)"),
-                    "analyzer": public_analyzer
+                    "analyzers": [public_analyzer]
                 }],
             },
         }], []
     elif mode == "syntax_analysis":
         public_analyzer = StatStatus("Syntax Analysis")
         return [{
+            "name": "Syntax Analysis",
             "args": get_config()["stage"][mode]["args"],
             "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+            "config_filename": "config.json",
             "sourcecode_filename": "testfile.txt",
             "input_filename": None,
             "answer_filename": "ans.txt",
-            "judge_configs": {
+            "judge_dict": {
                 "lexer": [{
                     "compiler_output_filename": "parser.txt",
                     "judge": LineCompare("Syntax Analysis (Parser)"),
-                    "analyzer": public_analyzer
+                    "analyzers": [public_analyzer]
                 }],
                 "error": [{
                     "compiler_output_filename": "error.txt",
                     "judge": LineCompare("Syntax Analysis (Error)"),
-                    "analyzer": public_analyzer
+                    "analyzers": [public_analyzer]
                 }],
             },
         }], []
     elif mode == "semantic_analysis":
         public_analyzer = StatStatus("Semantic Analysis")
         return [{
+            "name": "Semantic Analysis",
             "args": get_config()["stage"][mode]["args"],
             "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+            "config_filename": "config.json",
             "sourcecode_filename": "testfile.txt",
             "input_filename": None,
             "answer_filename": "ans.txt",
-            "judge_configs": {
+            "judge_dict": {
                 "symbol": [{
                     "compiler_output_filename": "symbol.txt",
                     "judge": LineCompare("Semantic Analysis (Symbol)"),
-                    "analyzer": public_analyzer
+                    "analyzers": [public_analyzer]
                 }],
                 "error": [{
                     "compiler_output_filename": "error.txt",
                     "judge": LineCompare("Semantic Analysis (Error)"),
-                    "analyzer": public_analyzer
+                    "analyzers": [public_analyzer]
                 }],
             },
         }], []

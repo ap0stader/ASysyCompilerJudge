@@ -16,7 +16,7 @@ def get_version() -> str:
     version_path = Path("./VERSION")
     if not version_path.is_file():
         raise VersionFileNotFoundException()
-    with open(version_path, "r", encoding='utf-8') as version_file:
+    with open(version_path, "r", encoding="utf-8") as version_file:
         version = version_file.read().strip()
         return version
 
@@ -28,5 +28,5 @@ def is_latest():
 
 # 写入版本
 def write_version(version: str = CURRENT_VERSION):
-    with open("./VERSION", "w", encoding='utf-8') as version_file:
+    with open("./VERSION", "w", encoding="utf-8") as version_file:
         version_file.write(version)
