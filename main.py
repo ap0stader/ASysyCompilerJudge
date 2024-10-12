@@ -22,7 +22,7 @@ if __name__ == '__main__':
           "[2] Syntax Analysis\n"
           "[3] Semantic Analysis\n"
           "[C] Custom")
-    stage_input = input("Please select the stage of your project [1-2 or C] ")
+    stage_input = input("Please select the stage of your project [1-3 or C] ")
     match stage_input:
         case "1":
             # 词法分析

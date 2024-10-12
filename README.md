@@ -125,18 +125,19 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    testfile
    ├── code_generation
    ├── lexical_analysis
-   │   ├── A
-   │   │   ├── testcase1
-   │   │   │   ├── ans.txt
-   │   │   │   ├── in.txt
-   │   │   │   └── testfile.txt
-   │   │   └── ...
-   │   ├── B
-   │   │   ├── testcase1
-   │   │   └── ...
-   │   └── C
-   │       ├── testcase1
-   │       └── ...
+   │   ├── A
+   │   │   ├── testcase1
+   │   │   │   ├── ans.txt
+   │   │   │   ├── config.json
+   │   │   │   ├── in.txt
+   │   │   │   └── testfile.txt
+   │   │   └── ...
+   │   ├── B
+   │   │   ├── testcase1
+   │   │   └── ...
+   │   └── C
+   │       ├── testcase1
+   │       └── ...
    ├── semantic_analysis
    └── syntax_analysis
    ```
@@ -150,18 +151,18 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    [2] Syntax Analysis
    [3] Semantic Analysis
    [C] Custom
-   Please select the stage_input of your project [1-2 or C] 1
+   Please select the stage_input of your project [1-3 or C] 1
    >>> Executor is ready!
    
    - Programming language: Java
    - JAR file path: PATH_TO_JAR
    Start observing JAR file? [Y/N] Y
    
-   >>> Creating Java Observer...
+   >>> Creating observer of Java...
    >>> All Observer Started!
    >>> Press Ctrl+C to exit.
    >>> Starting Executor...
-   No. 1  ......
+   >>> Task: ......
    ```
    
 7. 若开发语言为Java，在使用IDEA等开发工具生成新的JAR之后，评测机将**自动拉取新生成的JAR并自动进行测评**。
@@ -172,7 +173,7 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    >>> Judge finished! Continuing... 
    New Compiler.jar has been detected and copied.
    >>> Starting Executor...
-   No. 67  ......
+   >>> Task: ......
    ```
 
 8. 测评完成后，可在results文件中查看生成的测评结果。其中的文件夹以测评开始的时间的命名。每个文件夹中的summary.txt为**测评信息摘要**。其他部分按照导入的测试程序文件结构组织。与每个测试点testfile.txt同级的info.txt为该**测试点运行和评测的信息**。
@@ -180,14 +181,14 @@ By [@**a**p0stader](https://github.com/ap0stader) & [@**s**wkfk](https://github.
    ```
    ...
    ├── A
-   │   ├── testcase1
-   │   │   ├── info.txt
-   │   │   ├── lexer.txt
-   │   │   └── testfile.txt
-   │   └── ...
+   │   ├── testcase1
+   │   │   ├── info.txt
+   │   │   ├── lexer.txt
+   │   │   └── testfile.txt
+   │   └── ...
    ├── B
-   │   └── ...
+   │   └── ...
    ├── C
-   │   └── ...
+   │   └── ...
    └── summary.txt
    ```
