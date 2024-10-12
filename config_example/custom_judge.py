@@ -9,7 +9,7 @@ from judge.linecompare import LineCompare
 
 
 def get() -> Tuple[List[Dict[str, Any]], List[ExecutorObserver]]:
-    raise Exception("Custom configuration was not set")
+    raise Exception("Custom configuration was not set.")
 
 
 def example():
@@ -32,7 +32,7 @@ def example():
                 "analyzer": public_analyzer_example
             }],
         },
-    },{
+    }, {
         "args": "-args2",
         "testfile_path": "testfile_path2",
         "sourcecode_filename": Path("sourcecode_filename2"),
