@@ -47,7 +47,7 @@ class StatStatus(Analyzer):
             strbuilder += f"WA: {stat['WA']:<5} "
             strbuilder += f"TLE: {stat['TLE']:<5} "
             strbuilder += f"RE: {stat['RE']:<5} "
-
             if stat["UNKNOWN"] != 0:
                 strbuilder += f"UNKNOWN: {stat['UNKNOWN']:<5}"
-        return strbuilder + "\n"
+            strbuilder += "\n"
+        return strbuilder
