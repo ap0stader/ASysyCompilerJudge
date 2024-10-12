@@ -2,44 +2,52 @@ from pathlib import Path
 from typing import Tuple, Dict, Any, List
 
 from analyzer.common import Analyzer
+from analyzer.statstatus import StatStatus
 from executor import ExecutorObserver
 from judge.common import Judge
+from judge.linecompare import LineCompare
 
 
-def get() -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
+def get() -> Tuple[List[Dict[str, Any]], List[ExecutorObserver]]:
     raise Exception("Custom configuration was not set")
 
 
-def example_multiple():
-    return {
-        "judge_type": "multiple",  # DO NOT MODIFY
-        "judge_configs": [
-            {
-                "args": "-args",
-                "compiler_output_file": "output.txt",
-                "judge": Judge("name"),
-                "testfile_path": Path("testfile_path"),
-                "sourcecode_filename": "sourcecode_filename",
-                "input_filename": "input_filename",
-                "answer_filename": "answer_filename"
-            }
-        ],
-        "analyzer": Analyzer("name"),
-    }, []
-
-
-def example_single():
-    return {
-        "judge_type": "single",  # DO NOT MODIFY
+def example():
+    public_analyzer_example = Analyzer("public")
+    return [{
+        "args": "-args1",
+        "testfile_path": "testfile_path1",
+        "sourcecode_filename": Path("sourcecode_filename1"),
+        "input_filename": "input_filename1",
+        "answer_filename": "answer_filename1",
         "judge_configs": {
-            "args": "-args",
-            "judge_pairs": [
-                ("compiler_output_file", Judge("name")),
-            ],
-            "testfile_path": Path("testfile_path"),
-            "sourcecode_filename": "sourcecode_filename",
-            "input_filename": "input_filename",
-            "answer_filename": "answer_filename"
+            "type1": [{
+                "compiler_output_filename": "type1.txt",
+                "judge": Judge("1"),
+                "analyzer": public_analyzer_example
+            }],
+            "type2": [{
+                "compiler_output_filename": "type2.txt",
+                "judge": Judge("2"),
+                "analyzer": public_analyzer_example
+            }],
         },
-        "analyzer": Analyzer("name"),
-    }, []
+    },{
+        "args": "-args2",
+        "testfile_path": "testfile_path2",
+        "sourcecode_filename": Path("sourcecode_filename2"),
+        "input_filename": "input_filename2",
+        "answer_filename": "answer_filename2",
+        "judge_configs": {
+            "typea": [{
+                "compiler_output_filename": "typea.txt",
+                "judge": Judge("a"),
+                "analyzer": Analyzer("a")
+            }],
+            "typeb": [{
+                "compiler_output_filename": "typeb.txt",
+                "judge": Judge("b"),
+                "analyzer": Analyzer("b")
+            }],
+        },
+    }], []

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 # 当前版本
-CURRENT_VERSION = "1.3"
+CURRENT_VERSION = "2.0"
 
 
 # 没有找到版本文件异常

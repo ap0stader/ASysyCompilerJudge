@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 from typing import Tuple, Dict, Any, List
 
-from analyzer.statbyfile import StatByFile
+from analyzer.statstatus import StatStatus
 from executor import ExecutorObserver
 from judge.linecompare import LineCompare
 from util.termcolor import RESET, RED, YELLOW, CYAN
@@ -51,33 +51,73 @@ def get_config():
 
 
 # 根据配置文件和指定模式返回执行配置和额外的监视器
-def get_executor_config(mode: str) -> Tuple[Dict[str, Any], List[ExecutorObserver]]:
+def get_executor_config(mode: str) -> Tuple[List[Dict[str, Any]], List[ExecutorObserver]]:
     if mode == "custom":
         import config.custom_judge as custom
         return custom.get()
-    elif mode == "lexical_analysis" or mode == "syntax_analysis" or mode == "semantic_analysis":
-        if mode == "lexical_analysis":
-            name = "Lexical Analysis"
-        elif mode == "syntax_analysis":
-            name = "Syntax Analysis"
-        elif mode == "semantic_analysis":
-            name = "Semantic Analysis"
-        else:
-            name = "UNKNOWN ERROR"
-        return {
-            "judge_type": "single",
+    elif mode == "lexical_analysis":
+        public_analyzer = StatStatus("Lexical Analysis")
+        return [{
+            "args": get_config()["stage"][mode]["args"],
+            "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+            "sourcecode_filename": "testfile.txt",
+            "input_filename": None,
+            "answer_filename": "ans.txt",
             "judge_configs": {
-                "args": get_config()["stage"][mode]["args"],
-                "judge_pairs": [
-                    (get_config()["stage"][mode]["compiler_output_file"], LineCompare(name)),
-                ],
-                "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
-                "sourcecode_filename": get_config()["stage"][mode]["sourcecode_filename"],
-                "input_filename": None,
-                "answer_filename": get_config()["stage"][mode]["answer_filename"],
+                "lexer": [{
+                    "compiler_output_filename": "lexer.txt",
+                    "judge": LineCompare("Lexical Analysis (Lexer)"),
+                    "analyzer": public_analyzer
+                }],
+                "error": [{
+                    "compiler_output_filename": "error.txt",
+                    "judge": LineCompare("Lexical Analysis (Error)"),
+                    "analyzer": public_analyzer
+                }],
             },
-            "analyzer": StatByFile(name),
-        }, []
+        }], []
+    elif mode == "syntax_analysis":
+        public_analyzer = StatStatus("Syntax Analysis")
+        return [{
+            "args": get_config()["stage"][mode]["args"],
+            "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+            "sourcecode_filename": "testfile.txt",
+            "input_filename": None,
+            "answer_filename": "ans.txt",
+            "judge_configs": {
+                "lexer": [{
+                    "compiler_output_filename": "parser.txt",
+                    "judge": LineCompare("Syntax Analysis (Parser)"),
+                    "analyzer": public_analyzer
+                }],
+                "error": [{
+                    "compiler_output_filename": "error.txt",
+                    "judge": LineCompare("Syntax Analysis (Error)"),
+                    "analyzer": public_analyzer
+                }],
+            },
+        }], []
+    elif mode == "semantic_analysis":
+        public_analyzer = StatStatus("Semantic Analysis")
+        return [{
+            "args": get_config()["stage"][mode]["args"],
+            "testfile_path": Path(get_config()["stage"][mode]["testfile_path"]),
+            "sourcecode_filename": "testfile.txt",
+            "input_filename": None,
+            "answer_filename": "ans.txt",
+            "judge_configs": {
+                "symbol": [{
+                    "compiler_output_filename": "symbol.txt",
+                    "judge": LineCompare("Semantic Analysis (Symbol)"),
+                    "analyzer": public_analyzer
+                }],
+                "error": [{
+                    "compiler_output_filename": "error.txt",
+                    "judge": LineCompare("Semantic Analysis (Error)"),
+                    "analyzer": public_analyzer
+                }],
+            },
+        }], []
     else:
         print("When get_executor_config(), got wrong mode", file=sys.stderr)
         exit(1)

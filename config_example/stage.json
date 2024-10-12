@@ -1,44 +1,26 @@
 {
   "lexical_analysis": {
     "args": "-LEX",
-    "testfile_path": "./testfile/lexical_analysis/",
-    "compiler_output_file": "lexer.txt",
-    "error_filename": "error.txt",
-    "sourcecode_filename": "testfile.txt",
-    "answer_filename": "ans.txt"
+    "testfile_path": "./testfile/lexical_analysis/"
   },
   "syntax_analysis": {
     "args": "-SYN",
-    "testfile_path": "./testfile/syntax_analysis/",
-    "compiler_output_file": "parser.txt",
-    "error_filename": "error.txt",
-    "sourcecode_filename": "testfile.txt",
-    "answer_filename": "ans.txt"
+    "testfile_path": "./testfile/syntax_analysis/"
   },
   "semantic_analysis": {
     "args": "-SEM",
-    "testfile_path": "./testfile/semantic_analysis/",
-    "compiler_output_file": "symbol.txt",
-    "error_filename": "error.txt",
-    "sourcecode_filename": "testfile.txt",
-    "answer_filename": "ans.txt"
+    "testfile_path": "./testfile/semantic_analysis/"
   },
   "code_generation": {
     "testfile_path": "./testfile/code_generation/",
-    "sourcecode_filename": "testfile.txt",
-    "input_filename": "in.txt",
-    "answer_filename": "ans.txt",
     "llvm": {
-      "args": "-LLVM",
-      "compiler_output_file": "llvm_ir.txt"
+      "args": "-LLVM"
     },
     "mips": {
-      "args": "-MIPS",
-      "compiler_output_file": "mips.txt"
+      "args": "-MIPS"
     },
     "mips_optimized": {
-      "args": "-OPT",
-      "compiler_output_file": "mips.txt"
+      "args": "-OPT"
     }
   }
 }
