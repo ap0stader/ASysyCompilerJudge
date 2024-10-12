@@ -6,6 +6,7 @@ if not version.is_latest():
                     "Please run update.py first.")
 
 import configuration
+import console
 
 from executor import Executor
 from util.termcolor import RESET, RED, INVERT
@@ -56,13 +57,14 @@ if __name__ == '__main__':
             start = input("Start observing JAR file? [Y/N] ")
             print()
             if start.upper() == "Y":
-                lang = Java(jar_path=jar_path)
+                lang = Java(jar_path=jar_path, detected_hook=console.java_detected_hook)
             else:
                 print("Canceled.")
                 exit(0)
         # TODO 增加其他开发语言
         case _:
             raise KeyError("Programming language " + lang_input + " is not supported")
+    print(">>> Creating observer of " + lang.name() + "...")
     executor.add_observer(lang.get_observer)
     executor.set_execute(lang.execute)
     executor.observe()
