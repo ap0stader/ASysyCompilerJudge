@@ -1,18 +1,21 @@
-import sys
 from pathlib import Path
 
 # 当前版本
 CURRENT_VERSION = "1.3"
 
 
+# 没有找到版本文件异常
+class VersionFileNotFoundException(Exception):
+    def __init__(self):
+        super().__init__("VERSION file not found!\n"
+                         "If you have not initialize the environment, please run init.py first.")
+
+
 # 获取版本
 def get_version() -> str:
     version_path = Path("./VERSION")
     if not version_path.is_file():
-        print("VERSION file not found!\n"
-              "If you have not initialize the environment,\n"
-              "please run init.py first.", file=sys.stderr)
-        exit(1)
+        raise VersionFileNotFoundException()
     with open(version_path, "r", encoding='utf-8') as version_file:
         version = version_file.read().strip()
         return version
