@@ -1,17 +1,14 @@
-import sys
-
 from util import version
 
 # 检查当前是否是最新版本
 if not version.is_latest():
-    print("You have update the sourcecode but have not update the environment!\n"
-          "Please run update.py first.", file=sys.stderr)
-    exit(1)
+    raise Exception("You have update the sourcecode but have not update the environment!\n"
+                    "Please run update.py first.")
 
 import configuration
 
 from executor import Executor
-from util.termcolor import RESET, RED, INVERT,
+from util.termcolor import RESET, RED, INVERT
 
 if __name__ == '__main__':
     print(">>> Parsing configurations...")
@@ -38,8 +35,7 @@ if __name__ == '__main__':
             # 自定义评测
             mode = "custom"
         case _:
-            print("Invalid input", file=sys.stderr)
-            exit(1)
+            raise KeyError("Invalid stage input!")
     # 获取执行配置和额外的监视器
     executor_config, additional_observer = configuration.get_executor_config(mode=mode)
 
@@ -63,11 +59,10 @@ if __name__ == '__main__':
                 lang = Java(jar_path=jar_path)
             else:
                 print("Canceled.")
-                exit(1)
+                exit(0)
         # TODO 增加其他开发语言
         case _:
-            print("Programming language " + lang_input + " is not supported", file=sys.stderr)
-            exit(1)
+            raise KeyError("Programming language " + lang_input + " is not supported")
     executor.add_observer(lang.get_observer)
     executor.set_execute(lang.execute)
     executor.observe()
