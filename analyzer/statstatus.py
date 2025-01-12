@@ -23,9 +23,9 @@ class StatStatus(Analyzer):
                 self.status_data[origin]["AC"] += 1
             case StatusCode.JUDGE_WA:
                 self.status_data[origin]["WA"] += 1
-            case StatusCode.JUDGE_TLE, StatusCode.EXECUTE_TLE:
+            case StatusCode.JUDGE_TLE | StatusCode.EXECUTE_TLE:
                 self.status_data[origin]["TLE"] += 1
-            case StatusCode.JUDGE_RE, StatusCode.EXECUTE_RE:
+            case StatusCode.JUDGE_RE | StatusCode.EXECUTE_RE:
                 self.status_data[origin]["RE"] += 1
             case _:
                 self.status_data[origin]["UNKNOWN"] += 1

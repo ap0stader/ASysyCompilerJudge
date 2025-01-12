@@ -11,7 +11,7 @@ class LineCompare(Judge):
 
     def judge(self, compiler_output_path: Path, input_path: Path, answer_path: Path) -> Tuple[StatusCode, dict]:
         if not compiler_output_path.is_file():
-            return StatusCode.JUDGE_WA, {"info": ("File " + compiler_output_path.name) + " not found!"}
+            return StatusCode.JUDGE_UNKNOWN, {"info": ("File " + compiler_output_path.name) + " not found!"}
 
         with (open(compiler_output_path, "r", encoding="utf-8") as output_file,
               open(answer_path, "r", encoding="utf-8") as answer_file):
